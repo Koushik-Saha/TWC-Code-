@@ -16,19 +16,19 @@ class CreateRequestItemsTable extends Migration
     {
         Schema::create('request_items', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->bigInteger('mother_category_id')->nullable();
+            $table->bigInteger('mother_category_id');
             $table->bigInteger('category_id')->nullable();
             $table->bigInteger('sub_category_id')->nullable();
             $table->bigInteger('manufacture_id')->nullable();
-            $table->bigInteger('item_id')->nullable();
-            $table->double('price',15, 2)->nullable();
+            $table->bigInteger('item_id');
+            $table->double('price',15, 2);
             $table->double('vat',15, 2)->nullable();
-            $table->bigInteger('quantity')->nullable();
+            $table->bigInteger('quantity');
             $table->double('amount',15, 2)->nullable();
-            $table->bigInteger('project_id')->nullable();
-            $table->string('request_date')->nullable();
-            $table->bigInteger('request_id')->nullable();
-            $table->string('request_code')->nullable();
+            $table->bigInteger('project_id');
+            $table->string('request_date');
+            $table->bigInteger('request_id');
+            $table->string('request_code');
             $table->timestamps();
         });
     }

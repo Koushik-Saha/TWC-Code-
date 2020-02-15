@@ -10,6 +10,7 @@ use App\Models\MotherCategory;
 use App\Models\Project;
 use App\Models\RequestItem;
 use App\Models\Settings;
+use App\Models\User;
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -59,9 +60,10 @@ class RequestItemController extends Controller
 
 //        dd($request->all());
 
+
         $add = Cart::add([
             'id' => $request->item_id,
-            'name' => 'ID',
+            'name' => 'name',
             'qty' => $request->quantity,
             'price' => $request->price,
             'weight' => $request->amount,
@@ -80,9 +82,13 @@ class RequestItemController extends Controller
                 'quantity' => $request->quantity,
                 'amount' => $request->amount,
             ]
-        ]);
+        ])->associate(RequestItem::class);
+
+//        Cart::associate($add->rowId, RequestItem::class);
+
 
 //        dd($add);
+
 
         return redirect()->back()->with('message','Item added successfully');
 
@@ -90,8 +96,7 @@ class RequestItemController extends Controller
 
     public function processCartRequest(Request $request) {
 
-//        dd($request->all());
-
+        dd($request->all());
 
         $request->validate([
             'addmore.*.item_id' => 'required',
@@ -114,6 +119,15 @@ class RequestItemController extends Controller
 
 
     public function showRequestList(){
+
+        $itemList = RequestItem::all();
+
+        return view('admin.item.request.request-list')->with([
+            'itemList' => $itemList
+        ]);
+    }
+
+    public function showRequestItemList(){
 
         $itemList = RequestItem::all();
 

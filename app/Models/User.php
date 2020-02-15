@@ -154,4 +154,9 @@ class User extends Authenticatable
             ->first();
         return ($activity) ? $activity->activityBy : null;
     }
+
+    public function requestItem(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RequestItem::class);
+    }
 }

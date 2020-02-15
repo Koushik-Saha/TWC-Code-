@@ -277,6 +277,8 @@ Route::middleware('auth')->group(function() {
         Route::get('/request', 'RequestItemController@showRequest')->name('request-inventory');
         Route::post('/request', 'RequestItemController@processRequest')->name('request-inventory');
         Route::post('/request-cart', 'RequestItemController@processCartRequest')->name('request-cart-inventory');
+
+        //Ajax For select item
         Route::get('/inventory/items/{id}', 'InventoryManagementController@selectCategoryAjax');
         Route::get('/inventory/items-sub/{id}', 'InventoryManagementController@selectSubCategoryAjax');
         Route::get('/inventory/item-sub-category/{id}', 'InventoryManagementController@selectItemSubCategoryAjax');
@@ -285,9 +287,11 @@ Route::middleware('auth')->group(function() {
 
 
         //Request Item List
-        Route::get('/request-list', 'RequestItemController@showRequestList')->name('request-inventory-list');
+        Route::get('/request-list', 'RequestItemController@showRequestList')->name('request-list');
+        Route::get('/request-item-list', 'RequestItemController@showRequestItemList')->name('request-item-list');
         Route::get('item-list-del/delete/{id}', 'RequestItemController@delete');
 
+        //Cart Delete
         Route::post('/inventory/cart/qty/delete','RequestItemController@delete');
 
     });

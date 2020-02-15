@@ -293,7 +293,7 @@
                             </a>
                         </li>
                         <li class="">
-                            <a href="{{ route('request-inventory-list') }}" class="waves-effect waves-dark">
+                            <a href="{{ route('request-list') }}" class="waves-effect waves-dark">
                                 <span class="pcoded-mtext">Request Item List</span>
                                 <span class="pcoded-badge label label-danger">{{ \App\Models\RequestItem::count() }}</span>
                             </a>

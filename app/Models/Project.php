@@ -76,4 +76,9 @@ class Project extends Model
         $role_id = Role::whereRoleSlug('supplier')->firstOrFail()->role_id;
         return $this->employees()->where('role_id', '=', $role_id)->get();
     }
+
+    public function requestProject(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RequestItem::class);
+    }
 }

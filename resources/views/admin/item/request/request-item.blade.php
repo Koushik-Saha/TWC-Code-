@@ -72,10 +72,7 @@
                                 </div>
                             </div>
                             @php
-
-
                                 $user = \Illuminate\Support\Facades\Auth::user()->id;
-
                             @endphp
 {{--                            <div class="form-row mb-3">--}}
 {{--                                <div class="col">--}}
@@ -178,6 +175,7 @@
                                 <table class="table table-bordered " id="itemList">
                                     <thead>
                                     <tr>
+                                        <th scope="col">Item ID</th>
                                         <th scope="col">Item Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Vat</th>
@@ -187,15 +185,21 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach(Cart::content() as $item)
+                                    @foreach(Cart::content() as $user => $item)
                                         @php
-                                            $index = 0;
+                                                $index = 0;
+
+                                            $users = \DB::table('request_items')
+                                                    ->join('inventory_managements', 'request_items.item_id', '=', 'inventory_managements.id')
+                                                     ->select('request_items.*', 'inventory_managements.item_name')
+                                                     ->get();
                                         @endphp
                                         <tr>
                                             <td>
                                                 <input style="width: 30px; background-color: #aed581; border: none"
                                                        type="text" name="addmore[{{ $item->options->item_id }}][item_id]"
-                                                       id="item_id" value="{{ $item->options->item_id }}" readonly/>
+                                                       id="item_id" value="{{ $item->options->item_id}}" readonly/>
+{{--                                                {{ dd($item->model->item_name) }}--}}
                                             </td>
                                             <td hidden>
                                                 <input hidden style="width: 30px; background-color: #aed581; border: none"
@@ -413,6 +417,7 @@
             })
         });
     </script>
+
 
     <script>
 

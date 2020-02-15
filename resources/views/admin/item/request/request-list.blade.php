@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Item List')
+@section('title', 'Request List')
 
 @section('content')
     <div class="container">
@@ -14,11 +14,9 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Item Name</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Vat</th>
-                                    <th scope="col">Quantity</th>
-                                    <th scope="col">Amount</th>
+                                    <th scope="col">Submit By</th>
+                                    <th scope="col">From</th>
+                                    <th scope="col">To</th>
 
                                 </tr>
                                 </thead>
@@ -26,11 +24,21 @@
                                 @foreach($itemList as $index => $item)
                                     <tr>
                                         <th scope="row">{{$index+1}}</th>
-                                        <th>{{ $item->requestItem->item_name }}</th>
-                                        <th>{{ number_format($item->price,2) }}</th>
-                                        <th>{{ number_format($item->vat,2) }}</th>
-                                        <th>{{ number_format($item->quantity,2) }}</th>
-                                        <th>{{ number_format($item->amount,2) }}</th>
+                                        <th>
+                                            <a href="{{ route('administrators.show', $item->id) }}" title="See User Information">
+                                                {{ $item->requestUser->name }}
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="{{ route('project.show', ['id' => $item->project_id]) }}" title="See Project Details">
+                                                {{ $item->requestProject->project_name }}
+                                            </a>
+                                        </th>
+                                        <th>
+                                            <a href="{{ route('request-item-list', ['id' => $item->request_id])}}" title="See Requested Item">
+                                               Package {{ $item->request_id }}
+                                            </a>
+                                        </th>
                                     </tr>
                                 @endforeach
                                 </tbody>
