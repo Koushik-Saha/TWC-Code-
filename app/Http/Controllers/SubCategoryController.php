@@ -35,7 +35,7 @@ class SubCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validator =Validator::make($request->all(), [
+        /*$validator =Validator::make($request->all(), [
             'motherCategory' => 'required',
             'category' => 'required',
             'subCategoryName' => 'required'
@@ -45,6 +45,16 @@ class SubCategoryController extends Controller
         if ($validator->fails()) {
             Session::flash('error', 'Opps! some field are not properly inserted!!');
             return redirect()->back()->withErrors($validator);
+        }*/
+
+        $validator = Validator::make($request->all(), [
+            'motherCategory'        => ['required'],
+            'category'              => ['required',],
+            'subCategoryName'       => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return redirectBackWithValidationError($validator);
         }
 
         SubCategory::insert([
@@ -53,8 +63,8 @@ class SubCategoryController extends Controller
             'sub_category_name'=>$request->subCategoryName
         ]);
 
-
-        return redirect()->back()->with('message','Sub Category Created Successfully');
+        return redirectBackWithNotification('success', 'Sub Category Created Successfully!');
+//        return redirect()->back()->with('message','Sub Category Created Successfully');
     }
 
     public function update(Request $request, SubCategory $subCategory)
@@ -78,9 +88,16 @@ class SubCategoryController extends Controller
 
     public function del($id){
         $mc=SubCategory::find($id);
-        $mc->delete();
 
-        return redirect()->back()->with('message','Sub Category Deleted Successfully');
+        try {
+            $mc->delete();
+            return redirectBackWithNotification('success', 'Sub Category Deleted Successfully!');
+        }
+        catch (\Exception $exception) {
+            return redirectBackWithException($exception);
+        }
+
+//        return redirect()->back()->with('message','Sub Category Deleted Successfully');
     }
 
 
@@ -102,16 +119,14 @@ class SubCategoryController extends Controller
 
     public function updateSubCategory(Request $request, $id) {
 
-        $validator =Validator::make($request->all(), [
-            'motherCategory' => 'required',
-            'category' => 'required',
-            'subCategoryName' => 'required'
-
+        $validator = Validator::make($request->all(), [
+            'motherCategory'        => ['required'],
+            'category'              => ['required',],
+            'subCategoryName'       => ['required']
         ]);
 
         if ($validator->fails()) {
-            Session::flash('error', 'Opps! some field are not properly inserted!!');
-            return redirect()->back()->withErrors($validator);
+            return redirectBackWithValidationError($validator);
         }
 
         $subCategory = SubCategory::findOrFail($id);
@@ -122,8 +137,9 @@ class SubCategoryController extends Controller
 
         $subCategory->save();
 
-        return redirect()->back()->with('message','Sub Category Updated Successfully');
+        return redirectBackWithNotification('success', 'Sub Category Updated Successfully!');
 
-//        return redirectBackWithNotification();
+//        return redirect()->back()->with('message','Sub Category Updated Successfully');
+
     }
 }

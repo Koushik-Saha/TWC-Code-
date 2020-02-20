@@ -9,6 +9,7 @@ use App\Models\MotherCategory;
 use App\Models\SubCategory;
 use Faker\Provider\File;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class InventoryManagementController extends Controller
@@ -32,6 +33,19 @@ class InventoryManagementController extends Controller
     }
     public function processInventory(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'mother_category_id'        => ['required'],
+            'item_name'              => ['required', 'string'],
+            'item_unit'        => ['required', 'string'],
+            'item_price'          => ['required'],
+            'item_reusable'          => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return redirectBackWithValidationError($validator);
+        }
+
+
         $itemImg = $request->file('item_image');
         if ($itemImg != null)
         {
@@ -55,7 +69,9 @@ class InventoryManagementController extends Controller
 
         $createItem->save();
 
-        return redirect()->back()->with('message','Item Create Successfully');
+        return redirectBackWithNotification('success', 'Item Create Successfully!');
+
+//        return redirect()->back()->with('message','Item Create Successfully');
     }
 
 
@@ -126,17 +142,16 @@ class InventoryManagementController extends Controller
 
     public function updateInventory(Request $request, $id) {
 
-        $validator =Validator::make($request->all(), [
-            'mother_category_id' => 'required',
-            'item_name' => 'required',
-            'item_unit' => 'required',
-            'item_price' => 'required',
-            'item_reusable' => 'required',
-
+        $validator = Validator::make($request->all(), [
+            'mother_category_id'        => ['required'],
+            'item_name'                 => ['required', 'string'],
+            'item_unit'                 => ['required', 'string'],
+            'item_price'                => ['required'],
+            'item_reusable'             => ['required']
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+            return redirectBackWithValidationError($validator);
         }
 
         $inventory = InventoryManagement::findOrFail($id);
@@ -162,14 +177,16 @@ class InventoryManagementController extends Controller
 
         $inventory->save();
 
-        return redirect()->back()->with('message','Item Updated Successfully');
+        return redirectBackWithNotification('success', 'Item Updated Successfully!');
+
+//        return redirect()->back()->with('message','Item Updated Successfully');
 
     }
 
 
     public function delete(Request $request, $id){
 
-        $inventory=InventoryManagement::find($id);
+        $inventory=InventoryManagement::findOrFail($id);
 
         $image_path = $inventory->item_image;
 
@@ -179,8 +196,14 @@ class InventoryManagementController extends Controller
 
         }
 
-        $inventory->delete();
+        try {
+            $inventory->delete();
+            return redirectBackWithNotification('success', 'Item Deleted Successfully!');
+        }
+        catch (\Exception $exception) {
+            return redirectBackWithException($exception);
+        }
 
-        return redirect()->back()->with('message','Item Deleted successfully');
+//        return redirect()->back()->with('message','Item Deleted successfully');
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Models\Category;
 use App\Models\InventoryManagement;
 use App\Models\Item;
@@ -96,7 +97,7 @@ class RequestItemController extends Controller
 
     public function processCartRequest(Request $request) {
 
-        dd($request->all());
+//        dd($request->all());
 
         $request->validate([
             'addmore.*.item_id' => 'required',
@@ -105,6 +106,7 @@ class RequestItemController extends Controller
             'addmore.*.amount' => 'required',
             'addmore.*.mother_category_id' => 'required',
         ]);
+
 
         foreach ($request->addmore as $key => $value) {
             RequestItem::insert($value);
@@ -120,16 +122,30 @@ class RequestItemController extends Controller
 
     public function showRequestList(){
 
-        $itemList = RequestItem::all();
+        $itemList = RequestItem::select(
+            DB::raw('
+                           cartId,
+                           request_id,
+                           project_id,
+                           MAX(created_at) AS created_at,
+                           MAX(id) AS id
+            '))
+            ->groupBy('cartId')->get();
+
+//        dd($itemList);
+
 
         return view('admin.item.request.request-list')->with([
             'itemList' => $itemList
         ]);
     }
 
-    public function showRequestItemList(){
+    public function showRequestItemList(Request $request, $cartId){
 
-        $itemList = RequestItem::all();
+        $cartValue = $cartId;
+
+        $itemList = RequestItem::where('cartId','=',$cartValue)->get();
+
 
         return view('admin.item.request.request-item-list')->with([
             'itemList' => $itemList
@@ -151,5 +167,66 @@ class RequestItemController extends Controller
             'success' => true,
             'message' => 'Delete Successful !!'
         ];
+    }
+
+
+    public function edit($id) {
+
+        $inventory = RequestItem::findOrFail($id);
+
+        return view('admin.item.request.edit-request-item')
+            ->with([
+                'inventory' => $inventory,
+            ]);
+    }
+
+    public function updateInventory(Request $request, $id) {
+
+        $validator =Validator::make($request->all(), [
+            'item_id' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+            'amount' => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $inventoryRequest = RequestItem::findOrFail($id);
+
+        $inventoryRequest->mother_category_id = $request->post('mother_category_id');
+        $inventoryRequest->category_id = $request->post('category_id');
+        $inventoryRequest->sub_category_id = $request->post('sub_category_id');
+        $inventoryRequest->manufacture_id = $request->post('manufacture_id');
+        $inventoryRequest->item_id = $request->post('item_id');
+        $inventoryRequest->price = $request->post('price');
+        $inventoryRequest->vat = $request->post('vat');
+        $inventoryRequest->quantity = $request->post('quantity');
+        $inventoryRequest->amount = $request->post('amount');
+        $inventoryRequest->project_id = $request->post('project_id');
+        $inventoryRequest->request_date = $request->post('request_date');
+        $inventoryRequest->request_code = $request->post('request_code');
+        $inventoryRequest->request_id = $request->post('request_id');
+        $inventoryRequest->cartId = $request->post('cartId');
+
+
+        $inventoryRequest->save();
+
+        return redirect()
+            ->route('request-item-list', ['id' => $inventoryRequest->cartId] )
+            ->with('message','Requested Item Updated Successfully');
+
+    }
+
+
+    public function deleteRequest(Request $request, $id){
+
+        $inventory=RequestItem::findOrFail($id);
+
+        $inventory->delete();
+
+        return redirect()->back()->with('message','Request Item Deleted Successfully');
     }
 }

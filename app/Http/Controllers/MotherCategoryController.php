@@ -24,20 +24,30 @@ class MotherCategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validator =Validator::make($request->all(), [
+        /*$validator =Validator::make($request->all(), [
             'mother_name' => 'required',
 
         ]);
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
+        }*/
+
+        $validator = Validator::make($request->all(), [
+            'mother_name'        => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return redirectBackWithValidationError($validator);
         }
 
         MotherCategory::insert([
             'mother_name'=>$request->mother_name
         ]);
 
-        return redirect()->back()->with('message','Mother Category Created Successfully');
+        return redirectBackWithNotification('success', 'Mother Category Created Successfully!');
+
+//        return redirect()->back()->with('message','Mother Category Created Successfully');
     }
 
     public function edit($id) {
@@ -51,11 +61,12 @@ class MotherCategoryController extends Controller
     }
 
     public function updateMotherCategory(Request $request, $id) {
+
         $validator = Validator::make($request->all(), [
-            'mother_name'      => ['required', 'string'],
+            'mother_name'        => ['required']
         ]);
 
-        if($validator->fails()) {
+        if ($validator->fails()) {
             return redirectBackWithValidationError($validator);
         }
 
@@ -65,9 +76,10 @@ class MotherCategoryController extends Controller
 
         $motherCategory->save();
 
-        return redirect()->back()->with('message','Mother Category Updated Successfully');
+        return redirectBackWithNotification('success', 'Mother Category Updated Successfully!');
 
-//        return redirectBackWithNotification();
+//        return redirect()->back()->with('message','Mother Category Updated Successfully');
+
     }
 
 
@@ -86,8 +98,15 @@ class MotherCategoryController extends Controller
     public function del($id){
 
         $mc=MotherCategory::find($id);
-        $mc->delete();
 
-        return redirect()->back()->with('message','Mother Category Deleted successfully');
+        try {
+            $mc->delete();
+            return redirectBackWithNotification('success', 'Mother Category Deleted successfully!');
+        }
+        catch (\Exception $exception) {
+            return redirectBackWithException($exception);
+        }
+
+//        return redirect()->back()->with('message','Mother Category Deleted successfully');
     }
 }

@@ -170,13 +170,12 @@
                         <form action="{{route('request-cart-inventory')}}" method="post" enctype="multipart/form-data">
                             @csrf
                         <div class="card-body cart-color">
-                            <h5 class="w-100 text-center">All Requested Item List</h5>
+                            <h5 class="w-100 text-center">All Requested Item List <br><small style="color: red">Do not put same name twice</small></h5>
                             <div class="table-responsive">
                                 <table class="table table-bordered " id="itemList">
                                     <thead>
                                     <tr>
                                         <th scope="col">Item ID</th>
-                                        <th scope="col">Item Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Vat</th>
                                         <th scope="col">Quantity</th>
@@ -185,21 +184,22 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach(Cart::content() as $user => $item)
+                                    @foreach(Cart::content() as $index => $item)
                                         @php
-                                                $index = 0;
+                                            $uniqid = \Str::random(9);
 
-                                            $users = \DB::table('request_items')
-                                                    ->join('inventory_managements', 'request_items.item_id', '=', 'inventory_managements.id')
-                                                     ->select('request_items.*', 'inventory_managements.item_name')
-                                                     ->get();
+
                                         @endphp
                                         <tr>
                                             <td>
-                                                <input style="width: 30px; background-color: #aed581; border: none"
+                                                <input style="width: 200px; background-color: #aed581; border: none"
                                                        type="text" name="addmore[{{ $item->options->item_id }}][item_id]"
                                                        id="item_id" value="{{ $item->options->item_id}}" readonly/>
-{{--                                                {{ dd($item->model->item_name) }}--}}
+                                            </td>
+                                            <td hidden>
+                                                <input style="width: 30px; background-color: #aed581; border: none"
+                                                       type="text" name="addmore[{{ $item->options->item_id }}][cartId]"
+                                                       id="cartId" value="{{ 6 }}" readonly/>
                                             </td>
                                             <td hidden>
                                                 <input hidden style="width: 30px; background-color: #aed581; border: none"
@@ -411,7 +411,7 @@
                 url: `inventory/item-sub-category/${mcId}`,
                 success: data => {
                     data.item.forEach(items =>
-                        $('#items').append(`<option value="${items.id}">${items.item_name}</option>`)
+                        $('#items').append(`<option value="${items.id} - ${items.item_name}">${items.item_name}</option>`)
                     )
                 }
             })
@@ -432,7 +432,7 @@
                 url: `inventory/item-mother-category/${mcId}`,
                 success: data => {
                     data.item.forEach(items =>
-                        $('#items').append(`<option value="${items.id}">${items.item_name}</option>`)
+                        $('#items').append(`<option value="${items.id} - ${items.item_name}">${items.item_name}</option>`)
                     )
                 }
             })
@@ -452,7 +452,7 @@
                 url: `inventory/item-category/${mcId}`,
                 success: data => {
                     data.item.forEach(items =>
-                        $('#items').append(`<option value="${items.id}">${items.item_name}</option>`)
+                        $('#items').append(`<option value="${items.id} - ${items.item_name}">${items.item_name}</option>`)
                     )
                 }
             })

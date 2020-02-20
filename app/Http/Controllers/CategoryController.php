@@ -32,7 +32,7 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validator =Validator::make($request->all(), [
+        /*$validator =Validator::make($request->all(), [
             'motherCategory' => 'required',
             'categoryName' => 'required'
 
@@ -40,6 +40,15 @@ class CategoryController extends Controller
 
         if ($validator->fails()) {
             return redirect()->back()->withErrors($validator);
+        }*/
+
+        $validator = Validator::make($request->all(), [
+            'motherCategory'            => ['required'],
+            'categoryName'              => ['required']
+        ]);
+
+        if ($validator->fails()) {
+            return redirectBackWithValidationError($validator);
         }
 
         Category::insert([
@@ -47,7 +56,9 @@ class CategoryController extends Controller
             'category_name'=>$request->categoryName
         ]);
 
-        return redirect()->back()->with('message','Category Create successfully');
+        return redirectBackWithNotification('success', 'Category Create successfully!');
+
+//        return redirect()->back()->with('message','Category Create successfully');
     }
 
     public function update(Request $request, Category $category)
@@ -61,9 +72,16 @@ class CategoryController extends Controller
 
     public function del($id){
         $mc=Category::find($id);
-        $mc->delete();
 
-        return redirect()->back()->with('message','Category Delete successfully');
+        try {
+            $mc->delete();
+            return redirectBackWithNotification('success', 'Category Delete successfully!');
+        }
+        catch (\Exception $exception) {
+            return redirectBackWithException($exception);
+        }
+
+//        return redirect()->back()->with('message','Category Delete successfully');
     }
 
 
@@ -82,14 +100,13 @@ class CategoryController extends Controller
 
     public function updateCategory(Request $request, $id) {
 
-        $validator =Validator::make($request->all(), [
-            'motherCategory' => 'required',
-            'categoryName' => 'required'
-
+        $validator = Validator::make($request->all(), [
+            'motherCategory'            => ['required'],
+            'categoryName'              => ['required']
         ]);
 
         if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator);
+            return redirectBackWithValidationError($validator);
         }
 
         $category = Category::findOrFail($id);
@@ -99,7 +116,9 @@ class CategoryController extends Controller
 
         $category->save();
 
-        return redirect()->back()->with('message','Category Updated Successfully');
+        return redirectBackWithNotification('success', 'Category Updated Successfully!');
+
+//        return redirect()->back()->with('message','Category Updated Successfully');
 
     }
 }

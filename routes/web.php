@@ -263,36 +263,53 @@ Route::middleware('auth')->group(function() {
         Route::get('items-sub/{id}', 'InventoryManagementController@selectSubCategoryAjax');
 
         //All List of Item
-        Route::get('/show-all-item', 'InventoryManagementController@showAllInventory')->name('inventory.all-lists');
+        Route::get('show-all-item', 'InventoryManagementController@showAllInventory')->name('inventory.all-lists');
 
         //Edit/Delete/Update Item
-        Route::get('/edit/{id}', 'InventoryManagementController@edit')->name('edit-inventory');
-        Route::post('/edit/{id}', 'InventoryManagementController@updateInventory')->name('edit-inventory');
+        Route::get('edit/{id}', 'InventoryManagementController@edit')->name('edit-inventory');
+        Route::post('edit/{id}', 'InventoryManagementController@updateInventory')->name('edit-inventory');
         Route::get('edit/inventory/items/{id}', 'InventoryManagementController@selectCategoryAjax');
         Route::get('edit/inventory/items-sub/{id}', 'InventoryManagementController@selectSubCategoryAjax');
         Route::get('items-del/delete/{id}', 'InventoryManagementController@delete');
 
 
         //Request
-        Route::get('/request', 'RequestItemController@showRequest')->name('request-inventory');
-        Route::post('/request', 'RequestItemController@processRequest')->name('request-inventory');
-        Route::post('/request-cart', 'RequestItemController@processCartRequest')->name('request-cart-inventory');
+        Route::get('request', 'RequestItemController@showRequest')->name('request-inventory');
+        Route::post('request', 'RequestItemController@processRequest')->name('request-inventory');
+        Route::post('request-cart', 'RequestItemController@processCartRequest')->name('request-cart-inventory');
 
         //Ajax For select item
-        Route::get('/inventory/items/{id}', 'InventoryManagementController@selectCategoryAjax');
-        Route::get('/inventory/items-sub/{id}', 'InventoryManagementController@selectSubCategoryAjax');
-        Route::get('/inventory/item-sub-category/{id}', 'InventoryManagementController@selectItemSubCategoryAjax');
-        Route::get('/inventory/item-category/{id}', 'InventoryManagementController@selectItemCategoryAjax');
-        Route::get('/inventory/item-mother-category/{id}', 'InventoryManagementController@selectItemMotherCategoryAjax');
+        Route::get('inventory/items/{id}', 'InventoryManagementController@selectCategoryAjax');
+        Route::get('inventory/items-sub/{id}', 'InventoryManagementController@selectSubCategoryAjax');
+        Route::get('inventory/item-sub-category/{id}', 'InventoryManagementController@selectItemSubCategoryAjax');
+        Route::get('inventory/item-category/{id}', 'InventoryManagementController@selectItemCategoryAjax');
+        Route::get('inventory/item-mother-category/{id}', 'InventoryManagementController@selectItemMotherCategoryAjax');
 
 
         //Request Item List
-        Route::get('/request-list', 'RequestItemController@showRequestList')->name('request-list');
-        Route::get('/request-item-list', 'RequestItemController@showRequestItemList')->name('request-item-list');
+        Route::get('request-list', 'RequestItemController@showRequestList')->name('request-list');
+        Route::get('request-item-list/{cartId}', 'RequestItemController@showRequestItemList')->name('request-item-list');
         Route::get('item-list-del/delete/{id}', 'RequestItemController@delete');
 
         //Cart Delete
-        Route::post('/inventory/cart/qty/delete','RequestItemController@delete');
+        Route::post('inventory/cart/qty/delete','RequestItemController@delete');
+
+        //Edit and Update Requested Item
+        Route::get('request/edit/{id}', 'RequestItemController@edit')->name('edit-request-inventory');
+        Route::post('request/edit/{id}', 'RequestItemController@updateInventory')->name('edit-request-inventory');
+        Route::get('request-item-list/request/delete/{id}', 'RequestItemController@deleteRequest')->name('delete-request-inventory');
+
+
+        //Purchase Item
+        Route::post('purchase-approve', 'PurchaseItemController@processPurchaseApprove')->name('approve-item');
+        Route::get('purchase-item/{cartId}', 'PurchaseItemController@purchaseItem')->name('purchase-item');
+        Route::get('purchase-package-list', 'PurchaseItemController@purchasePackageList')->name('purchase-package-list');
+        Route::post('purchase-status', 'PurchaseItemController@statusUpdate')->name('change-status');
+
+
+        //Item Show
+        Route::get('show/{id}', 'ItemController@showItemsDetails')->name('items.showItemsDetails');
+
 
     });
 

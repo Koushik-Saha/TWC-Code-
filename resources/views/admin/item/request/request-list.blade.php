@@ -17,6 +17,7 @@
                                     <th scope="col">Submit By</th>
                                     <th scope="col">From</th>
                                     <th scope="col">To</th>
+                                    <th scope="col">Action</th>
 
                                 </tr>
                                 </thead>
@@ -25,7 +26,7 @@
                                     <tr>
                                         <th scope="row">{{$index+1}}</th>
                                         <th>
-                                            <a href="{{ route('administrators.show', $item->id) }}" title="See User Information">
+                                            <a href="{{ route('administrators.show', ['id' => $item->request_id]) }}" title="See User Information">
                                                 {{ $item->requestUser->name }}
                                             </a>
                                         </th>
@@ -35,9 +36,15 @@
                                             </a>
                                         </th>
                                         <th>
-                                            <a href="{{ route('request-item-list', ['id' => $item->request_id])}}" title="See Requested Item">
-                                               Package {{ $item->request_id }}
+                                            <a href="{{ route('request-item-list', ['id' => $item->cartId])}}" title="See Requested Item">
+                                               Package {{ $item->cartId }}
                                             </a>
+                                        </th>
+                                        <th>
+                                            <input type="submit" value="Accept" id=""
+                                                   class="btn btn-outline-success text-uppercase btn-sm">
+                                            <input type="submit" value="Reject" id=""
+                                                   class="btn btn-outline-warning text-uppercase btn-sm">
                                         </th>
                                     </tr>
                                 @endforeach
