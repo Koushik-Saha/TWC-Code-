@@ -59,15 +59,12 @@ class RequestItemController extends Controller
     public function processRequest(Request $request): RedirectResponse
     {
 
-//        dd($request->all());
-
-
         $add = Cart::add([
             'id' => $request->item_id,
             'name' => 'name',
             'qty' => $request->quantity,
             'price' => $request->price,
-            'weight' => $request->amount,
+            'weight' => '1',
             'options' => [
                 'mother_category_id' => $request->mother_category_id,
                 'category_id' => $request->category_id,
@@ -85,11 +82,6 @@ class RequestItemController extends Controller
             ]
         ])->associate(RequestItem::class);
 
-//        Cart::associate($add->rowId, RequestItem::class);
-
-
-//        dd($add);
-
 
         return redirect()->back()->with('message','Item added successfully');
 
@@ -97,7 +89,7 @@ class RequestItemController extends Controller
 
     public function processCartRequest(Request $request) {
 
-//        dd($request->all());
+//        dd(RequestItem::all());
 
         $request->validate([
             'addmore.*.item_id' => 'required',
@@ -109,7 +101,7 @@ class RequestItemController extends Controller
 
 
         foreach ($request->addmore as $key => $value) {
-            RequestItem::insert($value);
+            RequestItem::create($value);
         }
 
         Cart::destroy();
@@ -131,9 +123,6 @@ class RequestItemController extends Controller
                            MAX(id) AS id
             '))
             ->groupBy('cartId')->get();
-
-//        dd($itemList);
-
 
         return view('admin.item.request.request-list')->with([
             'itemList' => $itemList

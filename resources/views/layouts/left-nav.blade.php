@@ -292,27 +292,27 @@
                                 <span class="pcoded-mtext">Request Item</span>
                             </a>
                         </li>
-                            @php
-                                use App\Models\RequestItem;
-                                $itemList = RequestItem::select(
-                                DB::raw('
-                                         cartId,
-                                        MAX(created_at) AS created_at
-                                        '))->groupBy('cartId')->get();
-                            @endphp
-                            @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
-                        <li class="">
-                            <a href="{{ route('request-list') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Request Item List</span>
-                                <span class="pcoded-badge label label-danger">{{ $itemList->count() }}</span>
-                            </a>
-                        </li>
-                            @endif
+                        @php
+                            use App\Models\RequestItem;
+                            $itemList = RequestItem::select(
+                            DB::raw('
+                                     cartId,
+                                    MAX(created_at) AS created_at
+                                    '))->groupBy('cartId')->get();
+                        @endphp
+                        @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
                             <li class="">
-                                <a href="{{ route('purchase-package-list') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Purchase Item</span>
+                                <a href="{{ route('request-list') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Request Item List</span>
+                                    <span class="pcoded-badge label label-danger">{{ $itemList->count() }}</span>
                                 </a>
                             </li>
+                        @endif
+                        <li class="">
+                            <a href="{{ route('purchase-package-list') }}" class="waves-effect waves-dark">
+                                <span class="pcoded-mtext">Purchase Item</span>
+                            </a>
+                        </li>
                     </ul>
                 </li>
 

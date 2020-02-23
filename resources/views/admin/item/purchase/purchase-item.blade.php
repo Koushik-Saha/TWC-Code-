@@ -44,6 +44,9 @@
                                         <th>
                                             {{ $item->request_code }}
                                         </th>
+                                        <th hidden>
+                                            {{ $a = $item->cartId }}
+                                        </th>
                                     </tr>
                                 @endforeach
                                 <tr>
@@ -57,13 +60,13 @@
                                 </tr>
                                 </tbody>
                             </table>
-                            <form action="{{ route('change-status')}}" method="POST" enctype="multipart/form-data">
+                            <form action="{{ route('change-status', $a)}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row mb-3">
                                     <div class="col text-center">
-{{--                                        <button type="submit" class="btn btn-outline-success text-uppercase" name="status">Purchase</button>--}}
-                                        <input type="submit" value="Purchase" id="" name="status"
-                                               class="btn btn-outline-success text-uppercase">
+                                        <button type="submit" class="btn btn-outline-success text-uppercase" name="status" value="1">Purchase</button>
+{{--                                        <input type="submit" value="{{ $a }}" id="" name="status"--}}
+{{--                                               class="btn btn-outline-success text-uppercase">--}}
                                     </div>
                                 </div>
                             </form>

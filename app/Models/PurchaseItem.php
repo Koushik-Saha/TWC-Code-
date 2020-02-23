@@ -16,8 +16,14 @@ class PurchaseItem extends Model
         'user_id',
         'status',
         'payment_amount',
-        'cartId'
+        'cartId',
+        'status'
     ];
+
+    public function userRole(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
 
 
 

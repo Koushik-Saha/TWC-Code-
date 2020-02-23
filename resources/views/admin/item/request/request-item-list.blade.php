@@ -10,7 +10,7 @@
                     @csrf
                     <div class="card comp-card">
                         <div class="card-body">
-                            <h5 class="w-100 text-center">All Requested Item List</h5>
+                            <h5 class="w-100 text-center">Item List</h5>
                             <div class="table-responsive">
                                 <table class="table table-hover" id="itemList">
                                     <thead>

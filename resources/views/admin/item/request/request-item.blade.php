@@ -63,24 +63,9 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="form-row mb-3">
-                                <div class="col">
-                                    <small class="text-uppercase text-dark">Auto Generated Request ID<small style="color: red">*</small></small>
-                                    <input type="text" name="request_code" placeholder="Request Code"
-                                           class="form-control"
-                                           id="requestCode" readonly/>
-                                </div>
-                            </div>
                             @php
                                 $user = \Illuminate\Support\Facades\Auth::user()->id;
                             @endphp
-{{--                            <div class="form-row mb-3">--}}
-{{--                                <div class="col">--}}
-{{--                                    <input hidden type="text" name="request_date" placeholder="Request Date"--}}
-{{--                                           class="form-control"--}}
-{{--                                           id="requestName" value="{{ $dateTime }}" readonly/>--}}
-{{--                                </div>--}}
-{{--                            </div>--}}
                             <div class="form-row mb-3">
                                 <div class="col">
                                     <input hidden type="text" name="request_id" placeholder="Request ID"
@@ -107,29 +92,37 @@
                             <div class="form-row mb-3">
                                 <div class="col-sm-12">
                                     <small class="text-uppercase text-dark">Item Name<small style="color: red">*</small></small>
-                                    <select id="items" name="item_id" class="form-control" required>
+                                    <select id="items" name="item_id" class="form-control" required  onblur="setRequestCode()">
                                         <option disabled selected>Select Item....</option>
                                     </select>
                                 </div>
                                 <div class="col-sm-12">
                                     <small class="text-uppercase text-dark">Price<small style="color: red">*</small></small>
-                                    <input type="text" name="price" placeholder="Price"
-                                           class="form-control" required/>
+                                    <input id="price" type="text" name="price" placeholder="Price"
+                                           class="form-control" required  onblur="totalAmount()"/>
                                 </div>
                                 <div class="col-sm-12">
-                                    <small class="text-uppercase text-dark">Vat</small>
+                                    <small class="text-uppercase text-dark">Vat <span style="color: red">%</span></small>
                                     <input type="text" name="vat" placeholder="Vat"
                                            class="form-control"/>
                                 </div>
                                 <div class="col-sm-12">
                                     <small class="text-uppercase text-dark">Quantity<small style="color: red">*</small></small>
-                                    <input type="text" name="quantity"
-                                           placeholder="Quantity" class="form-control" required/>
+                                    <input id="quantity" type="text" name="quantity"
+                                           placeholder="Quantity" class="form-control" required  onblur="totalAmount()"/>
                                 </div>
                                 <div class="col-sm-12">
                                     <small class="text-uppercase text-dark">Amount<small style="color: red">*</small></small>
-                                    <input type="text" name="amount" placeholder="Amount"
-                                           class="form-control" required/>
+                                    <input id="amount" type="text" name="amount" placeholder="Amount"
+                                           class="form-control" required readonly  onblur="totalAmount()"/>
+                                </div>
+                            </div>
+                            <div class="form-row mb-3">
+                                <div class="col">
+                                    <small class="text-uppercase text-dark">Auto Generated Request ID<small style="color: red">*</small></small>
+                                    <input type="text" name="request_code" placeholder="Request Code"
+                                           class="form-control"
+                                           id="requestCode" readonly/>
                                 </div>
                             </div>
                             <div class="form-row mb-3">
@@ -149,6 +142,8 @@
                         var getCategory = document.getElementById('category').value;
                         var getSubCategory = document.getElementById('subCategory').value;
                         var getManufacture = document.getElementById('manufacture_id').value;
+                        var getProject = document.getElementById('project_name').value;
+                        var getItem = document.getElementById('items').value;
 
                         var slicedRequestCategoryName = getCategory.slice(0, 2);
                         var finalRequestCategoryName = slicedRequestCategoryName.toUpperCase();
@@ -159,8 +154,28 @@
                         var slicedRequestManufactureName = getManufacture.slice(0, 2);
                         var finalRequestManufactureName = slicedRequestManufactureName.toUpperCase();
 
-                        document.getElementById('requestCode').value = "REG" + "-" + getMotherCategory + '-' + finalRequestCategoryName + '-' + finalRequestSubCategoryName + '-' + finalRequestManufactureName;
+                        var slicedRequestProject = getProject.slice(0, 2);
+                        var finalRequestProject = slicedRequestProject.toUpperCase();
 
+                        var slicedRequestItem = getItem.slice(0, 2);
+                        var finalRequestItem = slicedRequestItem.toUpperCase();
+
+                        document.getElementById('requestCode').value = "REG" + getMotherCategory  + finalRequestCategoryName + finalRequestSubCategoryName + finalRequestManufactureName + finalRequestProject + finalRequestItem;
+
+                    }
+
+                    function totalAmount() {
+
+                        var getPrice = document.getElementById('price').value;
+                        var getQuantity = document.getElementById('quantity').value;
+
+                        var getTotalAmount = Number(getPrice * getQuantity);
+                        var roundedString = getTotalAmount.toFixed(2);
+                        var getFinalAmount = Number(roundedString);
+
+                        // var num = Number(0.005);
+
+                        document.getElementById('amount').value = getFinalAmount;
                     }
                 </script>
             </div>
@@ -175,7 +190,7 @@
                                 <table class="table table-bordered " id="itemList">
                                     <thead>
                                     <tr>
-                                        <th scope="col">Item ID</th>
+                                        <th scope="col">Item Name</th>
                                         <th scope="col">Price</th>
                                         <th scope="col">Vat</th>
                                         <th scope="col">Quantity</th>
@@ -183,13 +198,11 @@
                                         <th scope="col">Action</th>
                                     </tr>
                                     </thead>
+                                    @php
+                                        $uniqid = \Str::random(9);
+                                    @endphp
                                     <tbody>
                                     @foreach(Cart::content() as $index => $item)
-                                        @php
-                                            $uniqid = \Str::random(9);
-
-
-                                        @endphp
                                         <tr>
                                             <td>
                                                 <input style="width: 200px; background-color: #aed581; border: none"
@@ -199,7 +212,7 @@
                                             <td hidden>
                                                 <input style="width: 30px; background-color: #aed581; border: none"
                                                        type="text" name="addmore[{{ $item->options->item_id }}][cartId]"
-                                                       id="cartId" value="{{ 6 }}" readonly/>
+                                                       id="cartId" value="{{ $uniqid }}" readonly/>
                                             </td>
                                             <td hidden>
                                                 <input hidden style="width: 30px; background-color: #aed581; border: none"
@@ -266,7 +279,7 @@
                                             <td>
                                                 <input style="width: 100px; background-color: #aed581; border: none"
                                                        type="text" name="addmore[{{ $item->options->item_id }}][amount]"
-                                                       id="amount" value="{{ $item->options->amount,2 }}"
+                                                       id="amount" value="{{ $item->options->amount }}"
                                                        readonly/>
                                             </td>
                                             <td>
@@ -283,7 +296,8 @@
                                         <th></th>
                                         <th></th>
                                         <th></th>
-                                        <th>{{ Cart::total() }}</th>
+                                        <th></th>
+{{--                                        <th>{{ Cart::total() }}</th>--}}
                                         <th></th>
                                     </tr>
                                     </tbody>

@@ -302,13 +302,19 @@ Route::middleware('auth')->group(function() {
 
         //Purchase Item
         Route::post('purchase-approve', 'PurchaseItemController@processPurchaseApprove')->name('approve-item');
-        Route::get('purchase-item/{cartId}', 'PurchaseItemController@purchaseItem')->name('purchase-item');
         Route::get('purchase-package-list', 'PurchaseItemController@purchasePackageList')->name('purchase-package-list');
-        Route::post('purchase-status', 'PurchaseItemController@statusUpdate')->name('change-status');
+        Route::get('purchase-item/{cartId}', 'PurchaseItemController@purchaseItem')->name('purchase-item');
+        Route::post('purchase-status/{cartId}', 'PurchaseItemController@statusUpdate')->name('change-status');
 
 
         //Item Show
-        Route::get('show/{id}', 'ItemController@showItemsDetails')->name('items.showItemsDetails');
+        Route::get('show/{id}', 'InventoryManagementController@showItemsDetails')->name('inventory.showItemsDetails');
+
+        //Transfer Item & Project By Item Show
+        Route::get('inventory-project', 'InventoryManagementController@index')->name('inventory.index');
+        Route::post('inventory-project', 'InventoryManagementController@showItems')->name('inventory.index');
+        Route::post('inventory-transferred', 'ItemController@showTransferredItems')->name('inventory.transferred');
+
 
 
     });

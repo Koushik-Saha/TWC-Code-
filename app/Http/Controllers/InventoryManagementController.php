@@ -4,12 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\InventoryManagement;
+use App\Models\Item;
+use App\Models\ItemLog;
 use App\Models\Manufacture;
 use App\Models\MotherCategory;
+use App\Models\Project;
+use App\Models\RequestItem;
 use App\Models\SubCategory;
 use Faker\Provider\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class InventoryManagementController extends Controller
@@ -115,12 +120,29 @@ class InventoryManagementController extends Controller
         }
     }
 
-    public function showAllInventory(){
+    public function showAllInventory(Request $request){
 
         $inventory = InventoryManagement::all();
 
+        if(Auth::user()->isAdmin() || Auth::user()->isAccountant()) {
+//            $project = Project::findOrFail($request->post('pid'));
+            $projects = Project::where('project_status', '=', 'active')
+//                ->whereKeyNot($request->post('pid'))
+                ->orderBy('created_at','DESC')
+                ->get();
+        }
+        else {
+            $project = Auth::user()->projects()->findOrFail($request->post('pid'));
+            $projects = Auth::user()->projects()
+//                ->whereKeyNot($request->post('pid'))
+                ->where('project_status', '=', 'active')
+                ->orderBy('created_at','DESC')
+                ->get();
+        }
+
         return view('admin.item.all-item-list')->with([
-            'inventory' => $inventory
+            'inventory' => $inventory,
+            'projects'   => $projects,
         ]);
     }
 
@@ -206,4 +228,21 @@ class InventoryManagementController extends Controller
 
 //        return redirect()->back()->with('message','Item Deleted successfully');
     }
+
+
+    public function showItemsDetails($id) {
+
+        $item = InventoryManagement::findOrFail($id);
+
+        $itemList = RequestItem::where('item_id', '=', $item->id)->get();
+
+        return view('admin.item.item-details')
+            ->with([
+                'item'              => $item,
+                'itemList'          => $itemList
+            ]);
+    }
+
+
+    // Item See by Project
 }
