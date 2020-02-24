@@ -63,6 +63,19 @@
                             <form action="{{ route('change-status', $a)}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-row mb-3">
+                                    <div class="col">
+                                        <select id="vendor" name="vendor_id" class="form-control" required style="color: red">
+                                            <option>Select a Vendor...</option>
+                                            @foreach($vendor as $vendors)
+                                                <option
+                                                    value="{{$vendors->id}}"
+                                                    id="vendor">{{$vendors->name}}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-row mb-3">
                                     <div class="col text-center">
                                         <button type="submit" class="btn btn-outline-success text-uppercase" name="status" value="1">Purchase</button>
 {{--                                        <input type="submit" value="{{ $a }}" id="" name="status"--}}

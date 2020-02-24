@@ -17,10 +17,21 @@ class PurchaseItem extends Model
         'status',
         'payment_amount',
         'cartId',
-        'status'
+        'status',
+        'project_id'
     ];
 
     public function userRole(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
+    public function purchaseProject(): \Illuminate\Database\Eloquent\Relations\BelongsTo
+    {
+        return $this->belongsTo(Project::class,'project_id','project_id');
+    }
+
+    public function purchaseUser(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(User::class,'user_id','id');
     }

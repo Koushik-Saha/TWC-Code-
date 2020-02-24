@@ -81,4 +81,9 @@ class Project extends Model
     {
         return $this->hasMany(RequestItem::class);
     }
+
+    public function purchaseProject(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(PurchaseItem::class);
+    }
 }

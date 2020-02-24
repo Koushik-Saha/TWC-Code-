@@ -185,7 +185,7 @@
                 </li>
 
                 {{--                Category--}}
-                @if(Auth::user()->isAdmin())
+                @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
                     <li class="pcoded-hasmenu">
                         <a href="#" class="waves-effect waves-dark">
                             <span class="pcoded-micon"><i class="feather icon-clipboard"></i></span>
@@ -303,7 +303,7 @@
                         @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
                             <li class="">
                                 <a href="{{ route('request-list') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Request Item List</span>
+                                    <span class="pcoded-mtext">Requested Item List</span>
                                     <span class="pcoded-badge label label-danger">{{ $itemList->count() }}</span>
                                 </a>
                             </li>
@@ -313,6 +313,18 @@
                                 <span class="pcoded-mtext">Purchase Item</span>
                             </a>
                         </li>
+                        @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
+                            <li class="">
+                                <a href="{{ route('purchase-history') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Purchased History</span>
+                                </a>
+                            </li>
+{{--                            <li class="">--}}
+{{--                                <a href="{{ route('inventory.requestByProjects') }}" class="waves-effect waves-dark">--}}
+{{--                                    <span class="pcoded-mtext">Requested Item List<br> By Projects</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+                        @endif
                     </ul>
                 </li>
 

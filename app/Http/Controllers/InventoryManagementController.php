@@ -122,27 +122,21 @@ class InventoryManagementController extends Controller
 
     public function showAllInventory(Request $request){
 
-        $inventory = InventoryManagement::all();
+        $inventory = InventoryManagement::orderBy('created_at','DESC')->get();
 
         if(Auth::user()->isAdmin() || Auth::user()->isAccountant()) {
-//            $project = Project::findOrFail($request->post('pid'));
-            $projects = Project::where('project_status', '=', 'active')
-//                ->whereKeyNot($request->post('pid'))
-                ->orderBy('created_at','DESC')
-                ->get();
+            $project  = Project::where('project_status', '=', 'active')->get();
         }
         else {
-            $project = Auth::user()->projects()->findOrFail($request->post('pid'));
-            $projects = Auth::user()->projects()
-//                ->whereKeyNot($request->post('pid'))
+            $project = Auth::user()->projects()
                 ->where('project_status', '=', 'active')
-                ->orderBy('created_at','DESC')
+                ->orderBy('created_at', 'DESC')
                 ->get();
         }
 
         return view('admin.item.all-item-list')->with([
             'inventory' => $inventory,
-            'projects'   => $projects,
+            'project'   => $project
         ]);
     }
 

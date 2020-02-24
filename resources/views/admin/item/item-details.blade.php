@@ -34,16 +34,28 @@
                                 <span style="color: #e65100;">{{ $item->motherCategory->mother_name }}</span>
                             </h6>
                             <h6>
-                                Category :
-                                <span style="color: #e65100;">{{ $item->category->category_name }}</span>
+                                @if( $item->category_id === null)
+                                    <span class="label label-danger">Not Selected</span>
+                                @else
+                                    Category :
+                                    <span style="color: #e65100;">{{ $item->category->category_name }}</span>
+                                @endif
                             </h6>
                             <h6>
-                                Sub Category :
-                                <span style="color: #e65100;">{{ $item->subCategory->sub_category_name }}</span>
+                                @if( $item->sub_category_id === null)
+                                    <span class="label label-danger">Not Selected</span>
+                                @else
+                                    Sub Category :
+                                    <span style="color: #e65100;">{{ $item->subCategory->sub_category_name }}</span>
+                                @endif
                             </h6>
                             <h6>
-                                Manufacture :
-                                <span style="color: #e65100;">{{ $item->manufacture->name }}</span>
+                                @if( $item->manufacture_id === null)
+                                    <span class="label label-danger">Not Selected</span>
+                                @else
+                                    Manufacture :
+                                    <span style="color: #e65100;">{{ $item->manufacture->name }}</span>
+                                @endif
                             </h6>
                             <h6>
                                 Reusable:

@@ -160,8 +160,18 @@ class User extends Authenticatable
         return $this->hasMany(RequestItem::class);
     }
 
-    public function userRole(): \Illuminate\Database\Eloquent\Relations\HasMany
+    public function requestUser(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(RequestItem::class);
+    }
+
+    public function purchaseUser(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(PurchaseItem::class);
     }
+
+//    public function userRole(): \Illuminate\Database\Eloquent\Relations\HasMany
+//    {
+//        return $this->hasMany(PurchaseItem::class);
+//    }
 }

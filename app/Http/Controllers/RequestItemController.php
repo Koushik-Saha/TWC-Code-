@@ -29,7 +29,6 @@ class RequestItemController extends Controller
         $manufacture  = Manufacture::all();
 
         if(Auth::user()->isAdmin() || Auth::user()->isAccountant()) {
-
             $project  = Project::where('project_status', '=', 'active')->get();
         }
         else {
@@ -122,7 +121,9 @@ class RequestItemController extends Controller
                            MAX(created_at) AS created_at,
                            MAX(id) AS id
             '))
-            ->groupBy('cartId')->get();
+            ->groupBy('cartId')
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         return view('admin.item.request.request-list')->with([
             'itemList' => $itemList
@@ -133,7 +134,9 @@ class RequestItemController extends Controller
 
         $cartValue = $cartId;
 
-        $itemList = RequestItem::where('cartId','=',$cartValue)->get();
+        $itemList = RequestItem::where('cartId','=',$cartValue)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
 
         return view('admin.item.request.request-item-list')->with([

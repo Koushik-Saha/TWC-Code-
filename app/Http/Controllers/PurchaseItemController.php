@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\InventoryManagement;
+use App\Models\Project;
 use App\Models\PurchaseItem;
 use App\Models\RequestItem;
 use App\Models\Role;
@@ -11,6 +12,7 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use mysql_xdevapi\Table;
 
 class PurchaseItemController extends Controller
@@ -40,22 +42,25 @@ class PurchaseItemController extends Controller
 
         $cartValue = $cartId;
 
-        $itemList = RequestItem::where('cartId','=',$cartValue)->get();
+        $vendor = User::where('role_id','16')->get();
 
-//        $itemList = PurchaseItem::all();
+        $itemList = RequestItem::where('cartId','=',$cartValue)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
 
         return view('admin.item.purchase.purchase-item')->with([
-            'itemList' => $itemList
+            'itemList' => $itemList,
+            'vendor'  => $vendor
         ]);
     }
 
     public function purchasePackageList(){
 
-        $role = DB::table('bsoft_users')->select('id')->where('role_id','=', '12')->get();
+        //Get Current User
+        $currentUser = Auth::user()->id;
 
-//        dd($role);
-
+        //Get CartID using groupBy
         if(Auth::user()->isAdmin() || Auth::user()->isAccountant()) {
             $itemList = PurchaseItem::select(
                 DB::raw('cartId,
@@ -64,8 +69,11 @@ class PurchaseItemController extends Controller
                            MAX(created_at) AS created_at,
                            MAX(id) AS id
                            '))
-                ->groupBy('cartId')->get();
-        }else{
+                ->groupBy('cartId')
+                ->where('quantity', '!=','0')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }else if(Auth::user()->isManager()){
             $itemList = PurchaseItem::select(
                 DB::raw('cartId,
                            user_id,
@@ -73,12 +81,11 @@ class PurchaseItemController extends Controller
                            MAX(created_at) AS created_at,
                            MAX(id) AS id
                            '))
-                ->whereIn('user_id','=', '303')
+                ->where('user_id','=',$currentUser)
+                ->where('quantity', '!=','0')
+                ->orderBy('created_at', 'desc')
                 ->groupBy('cartId')->get();
         }
-
-
-//        dd($itemList);
 
         return view('admin.item.purchase.purchase-package-list')->with([
             'itemList' => $itemList
@@ -87,18 +94,58 @@ class PurchaseItemController extends Controller
 
     public function statusUpdate(Request $request, PurchaseItem $purchase, $cartId)
     {
-
         $purchaseItem = $cartId;
 
         // Set ALL records to a status of 0
         DB::table('purchase_items')->where('cartId','=', $purchaseItem)
             ->where('status',0)
-            ->update(['status' => 1]);
+            ->update(['status' => 1, 'vendor_id' => $request->post('vendor_id')]);
 
         // Set the passed record to a status of what ever is passed in the Request
-        $purchase->status = $request->post('status');
-        $purchase->save();
+//        $purchase->status = $request->post('status');
+//        $purchase->vendor_id = $request->post('vendor_id');
+//        $purchase->save();
 
-        return redirect()->back()->with('message', 'You have purchase your items');
+        return redirect()
+            ->route('purchase-package-list' )
+            ->with('message', 'You have purchase your items');
+    }
+
+
+    public function purchaseHistory()
+    {
+        $itemList = PurchaseItem::select(
+            DB::raw('cartId,
+                           user_id,
+                           status,
+                           project_id,
+                           MAX(created_at) AS created_at,
+                           MAX(id) AS id
+                           '))
+            ->groupBy('cartId')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('admin.item.purchase.purchase-history')->with([
+            'itemList' => $itemList
+        ]);
+    }
+
+
+    public function showItemByProject()
+    {
+        if(Auth::user()->isAdmin() || Auth::user()->isAccountant()) {
+            $projects  = Project::where('project_status', '=', 'active')->get();
+        }
+        else {
+            $projects = Auth::user()->projects()
+                ->where('project_status', '=', 'active')
+                ->orderBy('created_at', 'DESC')
+                ->get();
+        }
+
+        return view('admin.item.item-lists-by-projects')->with([
+            'projects' => $projects
+        ]);
     }
 }

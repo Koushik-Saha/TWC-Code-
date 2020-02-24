@@ -70,6 +70,12 @@
                                                        id="cartId" value="{{ $item->cartId }}"
                                                        readonly/>
                                             </th>
+                                            <th hidden>
+                                                <input style="width: 100px; background-color: white; border: none"
+                                                       type="text" name="addmore[{{ $item->item_id }}][project_id]"
+                                                       id="project_id" value="{{ $item->project_id }}"
+                                                       readonly/>
+                                            </th>
                                             <th>
                                                 <a href="{{ route('edit-request-inventory', ['id' => $item->id]) }}"
                                                    class="btn btn-sm btn-outline-primary">Edit</a>

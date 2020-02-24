@@ -306,14 +306,15 @@ Route::middleware('auth')->group(function() {
         Route::get('purchase-item/{cartId}', 'PurchaseItemController@purchaseItem')->name('purchase-item');
         Route::post('purchase-status/{cartId}', 'PurchaseItemController@statusUpdate')->name('change-status');
 
+        //Purchase History
+        Route::get('purchase-history', 'PurchaseItemController@purchaseHistory')->name('purchase-history');
 
         //Item Show
         Route::get('show/{id}', 'InventoryManagementController@showItemsDetails')->name('inventory.showItemsDetails');
 
         //Transfer Item & Project By Item Show
-        Route::get('inventory-project', 'InventoryManagementController@index')->name('inventory.index');
-        Route::post('inventory-project', 'InventoryManagementController@showItems')->name('inventory.index');
-        Route::post('inventory-transferred', 'ItemController@showTransferredItems')->name('inventory.transferred');
+        Route::get('request-by-projects', 'PurchaseItemController@showItemByProject')->name('inventory.requestByProjects');
+
 
 
 

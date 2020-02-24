@@ -102,11 +102,6 @@
                                            class="form-control" required  onblur="totalAmount()"/>
                                 </div>
                                 <div class="col-sm-12">
-                                    <small class="text-uppercase text-dark">Vat <span style="color: red">%</span></small>
-                                    <input type="text" name="vat" placeholder="Vat"
-                                           class="form-control"/>
-                                </div>
-                                <div class="col-sm-12">
                                     <small class="text-uppercase text-dark">Quantity<small style="color: red">*</small></small>
                                     <input id="quantity" type="text" name="quantity"
                                            placeholder="Quantity" class="form-control" required  onblur="totalAmount()"/>
@@ -115,6 +110,11 @@
                                     <small class="text-uppercase text-dark">Amount<small style="color: red">*</small></small>
                                     <input id="amount" type="text" name="amount" placeholder="Amount"
                                            class="form-control" required readonly  onblur="totalAmount()"/>
+                                </div>
+                                <div class="col-sm-12">
+                                    <small class="text-uppercase text-dark">Vat <span style="color: red">%</span></small>
+                                    <input type="text" name="vat" placeholder="Vat"
+                                           class="form-control"/>
                                 </div>
                             </div>
                             <div class="form-row mb-3">

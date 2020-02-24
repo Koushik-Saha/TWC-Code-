@@ -101,51 +101,51 @@
     </div>
 
     <!-- Modal -->
-{{--    <div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">--}}
-{{--        <div class="modal-dialog" role="document">--}}
-{{--            <div class="modal-content">--}}
-{{--                <form action="{{ route('items.transfer') }}" method="post">--}}
-{{--                    <div class="modal-header">--}}
-{{--                        <h4 class="modal-title text-center w-100" id="exampleModalLabel">Transfer Item</h4>--}}
-{{--                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">--}}
-{{--                            <span aria-hidden="true">&times;</span>--}}
-{{--                        </button>--}}
-{{--                    </div>--}}
-{{--                    <div class="modal-body">--}}
-{{--                        @csrf--}}
-{{--                        @method('PATCH')--}}
+    <div class="modal fade" id="transferModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form action="{{ route('items.transfer') }}" method="post">
+                    <div class="modal-header">
+                        <h4 class="modal-title text-center w-100" id="exampleModalLabel">Transfer Item</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        @csrf
+                        @method('PATCH')
 {{--                        <input type="hidden" name="project_from" value="{{ $project->project_id }}">--}}
-{{--                        <input type="hidden" name="item_id" value="" id="itemId">--}}
+                        <input type="hidden" name="item_id" value="" id="itemId">
 
-{{--                        <div class="form-group">--}}
-{{--                            <label for="project_to">Transfer To: <span class="text-danger">*</span></label>--}}
-{{--                            <select name="project_to" id="project_to" class="custom-select">--}}
-{{--                                <option selected disabled>--- Select A Project ---</option>--}}
-{{--                                @foreach($projects as $project)--}}
-{{--                                    <option value="{{ $project->project_id }}">{{ $project->project_name }}</option>--}}
-{{--                                @endforeach--}}
-{{--                            </select>--}}
-{{--                        </div>--}}
-{{--                        <br>--}}
-{{--                        <div class="form-group">--}}
-{{--                            <label for="quantity">Transfer Quantity: <span class="text-danger">*</span></label>--}}
-{{--                            <input type="number" class="form-control" id="quantity" name="quantity">--}}
-{{--                        </div>--}}
-{{--                        <div class="form-group">--}}
-{{--                            <label for="note">Note: </label>--}}
-{{--                            <textarea rows="3" class="form-control" id="note" name="note" style="resize: none;"></textarea>--}}
-{{--                        </div>--}}
+                        <div class="form-group">
+                            <label for="project_to">Transfer To: <span class="text-danger">*</span></label>
+                            <select name="project_to" id="project_to" class="custom-select">
+                                <option selected disabled>--- Select A Project ---</option>
+                                @foreach($project as $projects)
+                                    <option value="{{ $projects->project_id }}">{{ $projects->project_name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <label for="quantity">Transfer Quantity: <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="quantity" name="quantity">
+                        </div>
+                        <div class="form-group">
+                            <label for="note">Note: </label>
+                            <textarea rows="3" class="form-control" id="note" name="note" style="resize: none;"></textarea>
+                        </div>
 
 
-{{--                    </div>--}}
-{{--                    <div class="modal-footer">--}}
-{{--                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>--}}
-{{--                        <button type="submit" class="btn btn-success">Transfer</button>--}}
-{{--                    </div>--}}
-{{--                </form>--}}
-{{--            </div>--}}
-{{--        </div>--}}
-{{--    </div>--}}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Transfer</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 
 @endsection
