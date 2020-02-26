@@ -20,7 +20,7 @@ class PurchaseItemController extends Controller
     public function processPurchaseApprove(Request $request)
     {
 
-//        dd($request->all());
+        dd($request->all());
 
         $request->validate([
             'addmore.*.item_id' => 'required',
@@ -34,7 +34,7 @@ class PurchaseItemController extends Controller
             PurchaseItem::create($value);
         }
 
-        return redirect()->back()->with('message','Approve Item has been send successfully');
+        return redirect()->route('request-list')->with('message','Approve Item has been send successfully');
     }
 
 
@@ -44,7 +44,7 @@ class PurchaseItemController extends Controller
 
         $vendor = User::where('role_id','16')->get();
 
-        $itemList = RequestItem::where('cartId','=',$cartValue)
+        $itemList = PurchaseItem::where('cartId','=',$cartValue)
             ->orderBy('created_at', 'desc')
             ->get();
 
@@ -70,7 +70,6 @@ class PurchaseItemController extends Controller
                            MAX(id) AS id
                            '))
                 ->groupBy('cartId')
-                ->where('quantity', '!=','0')
                 ->orderBy('created_at', 'desc')
                 ->get();
         }else if(Auth::user()->isManager()){
@@ -82,7 +81,6 @@ class PurchaseItemController extends Controller
                            MAX(id) AS id
                            '))
                 ->where('user_id','=',$currentUser)
-                ->where('quantity', '!=','0')
                 ->orderBy('created_at', 'desc')
                 ->groupBy('cartId')->get();
         }
@@ -100,11 +98,6 @@ class PurchaseItemController extends Controller
         DB::table('purchase_items')->where('cartId','=', $purchaseItem)
             ->where('status',0)
             ->update(['status' => 1, 'vendor_id' => $request->post('vendor_id')]);
-
-        // Set the passed record to a status of what ever is passed in the Request
-//        $purchase->status = $request->post('status');
-//        $purchase->vendor_id = $request->post('vendor_id');
-//        $purchase->save();
 
         return redirect()
             ->route('purchase-package-list' )

@@ -138,7 +138,7 @@
             })
                 .then((willDelete) => {
                     if (willDelete) {
-                        swal("You have deleted a mother category!", {
+                        swal("You have deleted a Manufacture!", {
                             icon: "success",
                         });
                         window.location.href = window.location.href = "manufacturer/delete/" + mcId;

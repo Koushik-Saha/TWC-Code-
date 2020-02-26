@@ -218,61 +218,61 @@
 
 
                 {{--                Inventory--}}
+{{--                <li class="pcoded-hasmenu">--}}
+{{--                    <a href="javascript:void(0)" class="waves-effect waves-dark">--}}
+{{--                        <span class="pcoded-micon"><i class="feather icon-codepen"></i></span>--}}
+{{--                        <span class="pcoded-mtext">Inventory</span>--}}
+{{--                    </a>--}}
+{{--                    <ul class="pcoded-submenu">--}}
+{{--                        @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())--}}
+{{--                            <li class="">--}}
+{{--                                <a href="{{ route('items.create') }}" class="waves-effect waves-dark">--}}
+{{--                                    <span class="pcoded-mtext">Create New Unit</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                        @endif--}}
+
+{{--                        <li class="">--}}
+{{--                            <a href="{{ route('items.request-item') }}" class="waves-effect waves-dark">--}}
+{{--                                <span class="pcoded-mtext">Request New Item</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+
+{{--                        <li class="">--}}
+{{--                            <a href="{{ route('items.add') }}" class="waves-effect waves-dark">--}}
+{{--                                <span class="pcoded-mtext">Purchase Item</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="">--}}
+{{--                            <a href="{{ route('items.index') }}" class="waves-effect waves-dark">--}}
+{{--                                <span class="pcoded-mtext">Item List / Transferred Items</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        <li class="">--}}
+{{--                            <a href="{{ route('items.approved') }}" class="waves-effect waves-dark">--}}
+{{--                                <span class="pcoded-mtext">Approve Item List</span>--}}
+{{--                            </a>--}}
+{{--                        </li>--}}
+{{--                        @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())--}}
+{{--                            <li class="">--}}
+{{--                                <a href="{{ route('items.purchase') }}" class="waves-effect waves-dark">--}}
+{{--                                    <span class="pcoded-mtext">Purchase Requisition <br> History</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                            <li class="">--}}
+{{--                                <a href="{{ route('items.all-lists') }}" class="waves-effect waves-dark">--}}
+{{--                                    <span class="pcoded-mtext">All Project Item</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
+{{--                        @endif--}}
+{{--                    </ul>--}}
+{{--                </li>--}}
+
+
                 <li class="pcoded-hasmenu">
                     <a href="javascript:void(0)" class="waves-effect waves-dark">
                         <span class="pcoded-micon"><i class="feather icon-codepen"></i></span>
                         <span class="pcoded-mtext">Inventory</span>
-                    </a>
-                    <ul class="pcoded-submenu">
-                        @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
-                            <li class="">
-                                <a href="{{ route('items.create') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Create New Unit</span>
-                                </a>
-                            </li>
-                        @endif
-
-                        <li class="">
-                            <a href="{{ route('items.request-item') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Request New Item</span>
-                            </a>
-                        </li>
-
-                        <li class="">
-                            <a href="{{ route('items.add') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Purchase Item</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="{{ route('items.index') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Item List / Transferred Items</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="{{ route('items.approved') }}" class="waves-effect waves-dark">
-                                <span class="pcoded-mtext">Approve Item List</span>
-                            </a>
-                        </li>
-                        @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
-                            <li class="">
-                                <a href="{{ route('items.purchase') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Purchase Requisition <br> History</span>
-                                </a>
-                            </li>
-                            <li class="">
-                                <a href="{{ route('items.all-lists') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">All Project Item</span>
-                                </a>
-                            </li>
-                        @endif
-                    </ul>
-                </li>
-
-
-                <li class="pcoded-hasmenu">
-                    <a href="javascript:void(0)" class="waves-effect waves-dark">
-                        <span class="pcoded-micon"><i class="feather icon-codepen"></i></span>
-                        <span class="pcoded-mtext">New Inventory</span>
                     </a>
                     <ul class="pcoded-submenu">
                         @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
@@ -295,10 +295,12 @@
                         @php
                             use App\Models\RequestItem;
                             $itemList = RequestItem::select(
-                            DB::raw('
+                            \DB::raw('
                                      cartId,
                                     MAX(created_at) AS created_at
-                                    '))->groupBy('cartId')->get();
+                                    '))
+                                    ->groupBy('cartId')
+                                    ->get();
                         @endphp
                         @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
                             <li class="">

@@ -44,7 +44,7 @@
                                         <th>
                                             {{ $item->request_code }}
                                         </th>
-                                        <th hidden>
+                                        <th >
                                             {{ $a = $item->cartId }}
                                         </th>
                                     </tr>

@@ -48,10 +48,17 @@
                                             {{ $item->created_at->format('d M Y, h:i A') }}
                                         </td>
                                         <td>
-                                            <input type="submit" value="Accept" id=""
-                                                   class="btn btn-outline-success text-uppercase btn-sm">
-                                            <input type="submit" value="Reject" id=""
-                                                   class="btn btn-outline-warning text-uppercase btn-sm">
+                                            @if( \App\Models\PurchaseItem::where('status','=','0')->get() )
+                                                <i class="fas fa-check-circle bg-c-blue"></i>
+                                            @elseif( \App\Models\PurchaseItem::where('status','=','1')->get())
+                                                <i class="fas fa-times-circle bg-c-red"></i>
+                                            @endif
+{{--                                            <i class="fas fa-check-circle bg-c-blue"></i>--}}
+{{--                                            <i class="fas fa-times-circle bg-c-red"></i>--}}
+{{--                                            <input type="submit" value="Accept" id=""--}}
+{{--                                                   class="btn btn-outline-success text-uppercase btn-sm">--}}
+{{--                                            <input type="submit" value="Reject" id=""--}}
+{{--                                                   class="btn btn-outline-warning text-uppercase btn-sm">--}}
                                         </td>
                                     </tr>
                                 @endforeach

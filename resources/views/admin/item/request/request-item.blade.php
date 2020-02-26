@@ -199,7 +199,7 @@
                                     </tr>
                                     </thead>
                                     @php
-                                        $uniqid = \Str::random(9);
+                                        $uniqid = \Str::random(12);
                                     @endphp
                                     <tbody>
                                     @foreach(Cart::content() as $index => $item)

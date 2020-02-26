@@ -248,7 +248,7 @@ Route::middleware('auth')->group(function() {
     Route::get('sub-categories/category/{id}', 'SubCategoryController@selectCategoryAjax');
 
     //Manufacturer Category
-    Route::get('/manufacturer/delete/{id}', 'ManufactureController@del');
+    Route::get('manufacturer/manufacturer/delete/{id}', 'ManufactureController@del');
     Route::resource('/manufacturer', 'ManufactureController');
     Route::get('/brands/{id}', 'ManufactureController@edit')->name('brands');
     Route::post('/brands/{id}', 'ManufactureController@updateManufacturer')->name('brands');
@@ -314,6 +314,7 @@ Route::middleware('auth')->group(function() {
 
         //Transfer Item & Project By Item Show
         Route::get('request-by-projects', 'PurchaseItemController@showItemByProject')->name('inventory.requestByProjects');
+
 
 
 
