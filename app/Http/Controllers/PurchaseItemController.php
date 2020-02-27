@@ -20,8 +20,6 @@ class PurchaseItemController extends Controller
     public function processPurchaseApprove(Request $request)
     {
 
-        dd($request->all());
-
         $request->validate([
             'addmore.*.item_id' => 'required',
             'addmore.*.price' => 'required',
