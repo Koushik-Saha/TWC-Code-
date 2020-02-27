@@ -38,15 +38,15 @@
                                             </a>
                                         </td>
                                         <td>
-{{--                                            <a href="{{ route('purchase-item', ['id' => $item->cartId])}}" title="See Requested Item">--}}
+                                            <a href="{{ route('purchase-item', ['id' => $item->cartId])}}" title="See Requested Item">
                                                 {{ $item->cartId }} - {{ $index++ }}
-{{--                                            </a>--}}
+                                            </a>
                                         </td>
                                         <td>
                                             @if( $item->status === 0 )
-                                                <span class="label label-danger">Not Purchase</span>
+                                                <span class="label label-danger">Not Purchased</span>
                                             @else
-                                                <span class="label label-success">Purchase</span>
+                                                <span class="label label-success">Purchased</span>
                                             @endif
                                         </td>
                                         <td>

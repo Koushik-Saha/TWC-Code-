@@ -44,7 +44,7 @@
                                         <th>
                                             {{ $item->request_code }}
                                         </th>
-                                        <th >
+                                        <th hidden>
                                             {{ $a = $item->cartId }}
                                         </th>
                                     </tr>
@@ -77,7 +77,11 @@
                                 </div>
                                 <div class="form-row mb-3">
                                     <div class="col text-center">
-                                        <button type="submit" class="btn btn-outline-success text-uppercase" name="status" value="1">Purchase</button>
+                                        @if( $item->status === 0 )
+                                            <button type="submit" class="btn btn-outline-success text-uppercase" name="status" value="1">Purchase</button>
+                                        @else
+                                            <span class="label label-danger">You have Purchase This Item Packages</span>
+                                        @endif
 {{--                                        <input type="submit" value="{{ $a }}" id="" name="status"--}}
 {{--                                               class="btn btn-outline-success text-uppercase">--}}
                                     </div>

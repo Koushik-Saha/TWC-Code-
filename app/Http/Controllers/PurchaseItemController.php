@@ -82,7 +82,8 @@ class PurchaseItemController extends Controller
                            '))
                 ->where('user_id','=',$currentUser)
                 ->orderBy('created_at', 'desc')
-                ->groupBy('cartId')->get();
+                ->groupBy('cartId')
+                ->get();
         }
 
         return view('admin.item.purchase.purchase-package-list')->with([
@@ -117,9 +118,31 @@ class PurchaseItemController extends Controller
                            '))
             ->groupBy('cartId')
             ->orderBy('created_at', 'desc')
+            ->where('status','=','1')
             ->get();
 
         return view('admin.item.purchase.purchase-history')->with([
+            'itemList' => $itemList
+        ]);
+    }
+
+
+    public function notPurchaseHistory()
+    {
+        $itemList = PurchaseItem::select(
+            DB::raw('cartId,
+                           user_id,
+                           status,
+                           project_id,
+                           MAX(created_at) AS created_at,
+                           MAX(id) AS id
+                           '))
+            ->groupBy('cartId')
+            ->orderBy('created_at', 'desc')
+            ->where('status','=','0')
+            ->get();
+
+        return view('admin.item.purchase.not-purchase-history')->with([
             'itemList' => $itemList
         ]);
     }

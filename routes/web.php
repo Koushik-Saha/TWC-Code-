@@ -308,6 +308,7 @@ Route::middleware('auth')->group(function() {
 
         //Purchase History
         Route::get('purchase-history', 'PurchaseItemController@purchaseHistory')->name('purchase-history');
+        Route::get('not-purchase-history', 'PurchaseItemController@notPurchaseHistory')->name('not-purchase-history');
 
         //Item Show
         Route::get('show/{id}', 'InventoryManagementController@showItemsDetails')->name('inventory.showItemsDetails');
