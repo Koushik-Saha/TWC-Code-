@@ -15,7 +15,7 @@
                                 <tr>
                                     <th scope="col">#</th>
                                     <th scope="col">Purchase From</th>
-                                    <th scope="col">Purchase By</th>
+                                    <th scope="col">Requested By</th>
                                     <th scope="col">Requested Bundle List</th>
                                     <th scope="col">Status</th>
                                     <th scope="col">Date</th>
@@ -38,7 +38,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('purchase-item', ['id' => $item->cartId])}}" title="See Requested Item">
+                                            <a href="{{ route('purchase-item-details', ['id' => $item->cartId])}}" title="See Requested Item">
                                                 {{ $item->cartId }} - {{ $index++ }}
                                             </a>
                                         </td>

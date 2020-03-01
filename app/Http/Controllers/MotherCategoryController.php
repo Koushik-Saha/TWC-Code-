@@ -41,7 +41,7 @@ class MotherCategoryController extends Controller
             return redirectBackWithValidationError($validator);
         }
 
-        MotherCategory::insert([
+        MotherCategory::create([
             'mother_name'=>$request->mother_name
         ]);
 

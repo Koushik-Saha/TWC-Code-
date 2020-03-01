@@ -305,8 +305,15 @@
                         @if(Auth::user()->isAdmin() || Auth::user()->isAccountant())
                             <li class="">
                                 <a href="{{ route('request-list') }}" class="waves-effect waves-dark">
-                                    <span class="pcoded-mtext">Requested Item List</span>
+                                    <span class="pcoded-mtext">Pending Approval List</span>
                                     <span class="pcoded-badge label label-danger">{{ $itemList->count() }}</span>
+                                </a>
+                            </li>
+                        @endif
+                        @if(Auth::user()->isManager())
+                            <li class="">
+                                <a href="{{ route('request-list-manager') }}" class="waves-effect waves-dark">
+                                    <span class="pcoded-mtext">Requested Item List</span>
                                 </a>
                             </li>
                         @endif
@@ -326,11 +333,11 @@
                                     <span class="pcoded-mtext">Not Purchased History</span>
                                 </a>
                             </li>
-{{--                            <li class="">--}}
-{{--                                <a href="{{ route('inventory.requestByProjects') }}" class="waves-effect waves-dark">--}}
-{{--                                    <span class="pcoded-mtext">Requested Item List<br> By Projects</span>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
+                            {{--                            <li class="">--}}
+                            {{--                                <a href="{{ route('inventory.requestByProjects') }}" class="waves-effect waves-dark">--}}
+                            {{--                                    <span class="pcoded-mtext">Requested Item List<br> By Projects</span>--}}
+                            {{--                                </a>--}}
+                            {{--                            </li>--}}
                         @endif
                     </ul>
                 </li>

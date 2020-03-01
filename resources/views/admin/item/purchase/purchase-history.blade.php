@@ -38,7 +38,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('purchase-item', ['id' => $item->cartId])}}" title="See Requested Item">
+                                            <a href="{{ route('purchase-item-details', ['id' => $item->cartId])}}" title="See Requested Item">
                                                 {{ $item->cartId }} - {{ $index++ }}
                                             </a>
                                         </td>

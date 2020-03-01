@@ -51,7 +51,7 @@ class CategoryController extends Controller
             return redirectBackWithValidationError($validator);
         }
 
-        Category::insert([
+        Category::create([
             'mother_category_id' =>$request->motherCategory,
             'category_name'=>$request->categoryName
         ]);

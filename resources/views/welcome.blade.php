@@ -61,11 +61,14 @@
     <div class="row justify-content-center">
         @php
 
-            use App\Models\Attendance;use App\Models\User;use Carbon\Carbon;
+            use App\Models\Attendance;use App\Models\User;use Carbon\Carbon;use Illuminate\Support\Facades\DB;
+
+            $currentUser = \Illuminate\Support\Facades\Auth::user()->id;
 
             if(Auth::user()->isManager()) {
                 $income = Auth::user()->managerPayments()->whereIn('payment_purpose', ['employee_transfer', 'employee_refund'])->sum('payment_amount');
                 $expense = Auth::user()->expenses()->where('payment_type', '=', 'debit')->sum('payment_amount');
+                $itemExpense = DB::table('purchase_items')->where('user_id','=',$currentUser)->sum('amount');
             }
             else if(Auth::user()->isAccountant()) {
                 $income = Auth::user()->payments()->whereIn('payment_purpose', ['vendor_refund', 'loan_received', 'project_money', 'office_withdraw', 'employee_refund'])
@@ -107,7 +110,7 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-handshake bg-c-green"></i>
-{{--                                <i class="fas fa-hand-paper bg-c-green"></i>--}}
+                                {{--                                <i class="fas fa-hand-paper bg-c-green"></i>--}}
                             </div>
                         </div>
                     </div>
@@ -123,29 +126,45 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-times-circle bg-c-red"></i>
-{{--                                <i class="fab fa-creative-commons-nc bg-c-red"></i>--}}
+                                {{--                                <i class="fab fa-creative-commons-nc bg-c-red"></i>--}}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
             @if(Auth::user()->isManager())
-            <div class="col-md-4">
-                <div class="card comp-card">
-                    <div class="card-body">
-                        <div class="row align-items-center">
-                            <div class="col">
-                                <h6 class="m-b-25">Remaining Balance {{ Auth::user()->isAccountant() ? 'Today' : '' }}</h6>
-                                <h3 class="f-w-700 text-c-purple">{{ number_format($income - $expense,2) }}</h3>
-                            </div>
-                            <div class="col-auto">
-                                <i class="fas fa-minus-circle bg-c-purple"></i>
-{{--                                <i class="fas fa-hand-paper bg-c-red"></i>--}}
+                <div class="col-md-4">
+                    <div class="card comp-card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="m-b-25">Remaining
+                                        Balance {{ Auth::user()->isAccountant() ? 'Today' : '' }}</h6>
+                                    <h3 class="f-w-700 text-c-purple">{{ number_format($income - $expense,2) }}</h3>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-minus-circle bg-c-purple"></i>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="col-md-4">
+                    <div class="card comp-card">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col">
+                                    <h6 class="m-b-25">Total Expenses In
+                                        Item {{ Auth::user()->isAccountant() ? 'Today' : '' }}</h6>
+                                    <h3 class="f-w-700 text-c-red">{{ number_format($itemExpense,2) }}</h3>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-times-circle bg-c-red"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             @endif
         @endif
 
@@ -163,7 +182,7 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-user bg-c-lite-green"></i>
-{{--                                <i class="fas fa-hand-paper bg-c-lite-green"></i>--}}
+                                {{--                                <i class="fas fa-hand-paper bg-c-lite-green"></i>--}}
                             </div>
                         </div>
                     </div>
@@ -180,7 +199,7 @@
                             </div>
                             <div class="col-auto">
                                 <i class="fas fa-user-circle bg-c-lite-green"></i>
-{{--                                <i class="fas fa-hand-paper bg-c-lite-green"></i>--}}
+                                {{--                                <i class="fas fa-hand-paper bg-c-lite-green"></i>--}}
                             </div>
                         </div>
                     </div>
@@ -193,10 +212,12 @@
 
 
 @section('script')
-    <script language="JavaScript" src="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js" type="text/javascript"></script>
+    <script language="JavaScript"
+            src="https://cdn.datatables.net/plug-ins/3cfcc339e89/integration/bootstrap/3/dataTables.bootstrap.js"
+            type="text/javascript"></script>
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#example').DataTable();
-        } );
+        });
     </script>
 @endsection

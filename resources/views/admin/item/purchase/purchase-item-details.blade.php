@@ -1,6 +1,6 @@
 @extends('layouts.master')
 
-@section('title', 'Request List')
+@section('title', 'Purchase Item')
 
 @section('content')
     <div class="container">
@@ -8,18 +8,19 @@
             <div class="col-md-12">
                 <div class="card comp-card">
                     <div class="card-body">
-                        <h5 class="w-100 text-center">All Requested Bundle List</h5>
+                        <h5 class="w-100 text-center">Purchase Item</h5>
                         <div class="table-responsive">
                             <table class="table table-hover" id="itemList">
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Submit By</th>
-                                    <th scope="col">From</th>
-                                    <th scope="col">Bundle</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Action</th>
-
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Vat</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Item Code</th>
+{{--                                    <th scope="col">Vendor</th>--}}
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -27,35 +28,41 @@
                                     <tr>
                                         <th scope="row">{{$index+1}}</th>
                                         <td>
-                                            <a href="{{ route('administrators.show', ['id' => $item->request_id]) }}"
-                                               title="See User Information">
-                                                {{ $item->requestUser->name }}
-                                            </a>
+                                            {{ $item->item_id }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('project.show', ['id' => $item->project_id]) }}"
-                                               title="See Project Details">
-                                                {{ $item->requestProject->project_name }}
-                                            </a>
+                                            {{ number_format($item->price,2) }}
                                         </td>
                                         <td>
-                                            <a href="{{ route('request-item-list', ['id' => $item->cartId])}}"
-                                               title="See Requested Item">
-                                                {{ $item->cartId }} - {{ $index++ }}
-                                            </a>
+                                            {{ number_format($item->vat,2) }}
                                         </td>
                                         <td>
-                                            {{ $item->created_at->format('d M Y, h:i A') }}
+                                            {{ $item->quantity }}
                                         </td>
                                         <td>
-                                            @if( \App\Models\PurchaseItem::where('status','=','0')->get() )
-                                                <i class="fas fa-check-circle bg-c-blue"></i>
-                                            @elseif( \App\Models\PurchaseItem::where('status','=','1')->get())
-                                                <i class="fas fa-times-circle bg-c-red"></i>
-                                            @endif
+                                            {{ number_format($item->amount,2) }}
                                         </td>
+                                        <td>
+                                            {{ $item->request_code }}
+                                        </td>
+{{--                                        <td>--}}
+{{--                                            <a href="{{ route('vendor.show', ['id' => $item->vendor_id]) }}"--}}
+{{--                                               title="See User Information">--}}
+{{--                                                {{ $item->purchaseUser->name }}--}}
+{{--                                            {{ $item->vendor_id }}--}}
+{{--                                            </a>--}}
+{{--                                        </td>--}}
                                     </tr>
                                 @endforeach
+                                <tr>
+                                    <th></th>
+                                    <th>Total</th>
+                                    <th>{{ number_format($itemList->sum('price'),2) }}</th>
+                                    <th></th>
+                                    <th>{{ number_format($itemList->sum('quantity'),2) }}</th>
+                                    <th>{{ number_format($itemList->sum('amount'),2) }}</th>
+                                    <th></th>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -20,7 +20,8 @@ class RequestItem extends Model
         'request_date',
         'request_code',
         'request_id',
-        'cartId'
+        'cartId',
+        'status_req'
         ];
 
     public function requestItem(): \Illuminate\Database\Eloquent\Relations\BelongsTo

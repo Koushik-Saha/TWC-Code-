@@ -130,6 +130,17 @@ class RequestItemController extends Controller
         ]);
     }
 
+    public function showRequestListManager(){
+
+        $currentUser = Auth::user()->id;
+
+        $itemList = RequestItem::where('request_id','=',$currentUser)->get();
+
+        return view('admin.item.request.request-list-manager')->with([
+            'itemList' => $itemList
+        ]);
+    }
+
     public function showRequestItemList(Request $request, $cartId){
 
         $cartValue = $cartId;

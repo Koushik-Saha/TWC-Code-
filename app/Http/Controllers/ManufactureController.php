@@ -32,7 +32,7 @@ class ManufactureController extends Controller
             return redirect()->back()->withErrors($validator);
         }
 
-        Manufacture::insert([
+        Manufacture::create([
             'name'=>$request->name
         ]);
 

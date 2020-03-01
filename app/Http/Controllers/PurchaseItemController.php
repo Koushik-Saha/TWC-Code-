@@ -32,6 +32,7 @@ class PurchaseItemController extends Controller
             PurchaseItem::create($value);
         }
 
+
         return redirect()->route('request-list')->with('message','Approve Item has been send successfully');
     }
 
@@ -91,16 +92,70 @@ class PurchaseItemController extends Controller
 
     public function statusUpdate(Request $request, PurchaseItem $purchase, $cartId)
     {
+//        dd($request->all());
         $purchaseItem = $cartId;
 
         // Set ALL records to a status of 0
         DB::table('purchase_items')->where('cartId','=', $purchaseItem)
             ->where('status',0)
-            ->update(['status' => 1, 'vendor_id' => $request->post('vendor_id')]);
+            ->update([
+                'status' => 1,
+            ]);
 
         return redirect()
             ->route('purchase-package-list' )
             ->with('message', 'You have purchase your items');
+    }
+
+
+    public function edit($id) {
+
+        $purchase = PurchaseItem::findOrFail($id);
+
+        $vendor = User::where('role_id','16')->get();
+
+        return view('admin.item.purchase.edit-purchase-item')
+            ->with([
+                'purchase' => $purchase,
+                'vendor'   => $vendor,
+            ]);
+    }
+
+    public function updatePurchaseInventory(Request $request, $id) {
+
+        $validator =Validator::make($request->all(), [
+            'item_id' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+            'amount' => 'required',
+
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator);
+        }
+
+        $purchaseInventory = PurchaseItem::findOrFail($id);
+
+        $purchaseInventory->item_id = $request->post('item_id');
+        $purchaseInventory->price = $request->post('price');
+        $purchaseInventory->vat = $request->post('vat');
+        $purchaseInventory->quantity = $request->post('quantity');
+        $purchaseInventory->amount = $request->post('amount');
+        $purchaseInventory->project_id = $request->post('project_id');
+        $purchaseInventory->request_code = $request->post('request_code');
+        $purchaseInventory->payment_amount = $request->post('payment_amount');
+        $purchaseInventory->vendor_id = $request->post('vendor_id');
+        $purchaseInventory->user_id = $request->post('user_id');
+        $purchaseInventory->cartId = $request->post('cartId');
+
+
+        $purchaseInventory->save();
+
+        return redirect()
+            ->route('purchase-item', ['id' => $purchaseInventory->cartId] )
+            ->with('message','Vendor Updated Successfully');
+
     }
 
 
@@ -145,6 +200,23 @@ class PurchaseItemController extends Controller
         ]);
     }
 
+    public function purchaseItemDetails(RequestItem $requestItem, $cartId){
+
+        $cartValue = $cartId;
+
+        $vendor = User::where('role_id','16')->get();
+
+        $itemList = PurchaseItem::where('cartId','=',$cartValue)
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+
+        return view('admin.item.purchase.purchase-item-details')->with([
+            'itemList' => $itemList,
+            'vendor'  => $vendor
+        ]);
+    }
+
 
     public function showItemByProject()
     {
@@ -162,4 +234,5 @@ class PurchaseItemController extends Controller
             'projects' => $projects
         ]);
     }
+
 }

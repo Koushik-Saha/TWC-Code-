@@ -34,12 +34,12 @@
                                             <th>
                                                 <input style="width: 100px; background-color: white; border: none"
                                                        type="text" name="addmore[{{ $item->item_id }}][price]"
-                                                       id="price" value="{{ number_format($item->price,2)}}" readonly/>
+                                                       id="price" value="{{ $item->price }}" readonly/>
                                             </th>
                                             <th>
                                                 <input style="width: 100px; background-color: white; border: none"
                                                        type="text" name="addmore[{{ $item->item_id }}][vat]"
-                                                       id="vat" value="{{ number_format($item->vat,2)}}" readonly/>
+                                                       id="vat" value="{{ $item->vat }}" readonly/>
                                             </th>
                                             <th>
                                                 <input style="width: 100px; background-color: white; border: none"
@@ -49,7 +49,7 @@
                                             <th>
                                                 <input style="width: 100px; background-color: white; border: none"
                                                        type="text" name="addmore[{{ $item->item_id }}][amount]"
-                                                       id="amount" value="{{ number_format($item->amount,2)}}"
+                                                       id="amount" value="{{ $item->amount }}"
                                                        readonly/>
                                             </th>
                                             <th hidden>
@@ -79,8 +79,6 @@
                                             <th>
                                                 <a href="{{ route('edit-request-inventory', ['id' => $item->id]) }}"
                                                    class="btn btn-sm btn-outline-primary">Edit</a>
-{{--                                                <a id="deleteBtn" data-id="{{$item->id}}" href="#"--}}
-{{--                                                   class="btn btn-sm btn-danger">Delete</a>--}}
                                                 <a href="{{ route('delete-request-inventory', ['id' => $item->id]) }}"
                                                    class="btn btn-sm btn-danger">Delete</a>
                                             </th>

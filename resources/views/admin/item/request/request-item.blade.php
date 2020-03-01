@@ -211,6 +211,11 @@
                                             </td>
                                             <td hidden>
                                                 <input style="width: 30px; background-color: #aed581; border: none"
+                                                       type="number" name="addmore[{{ $item->options->item_id }}][status_req]"
+                                                       id="status" value="0" readonly/>
+                                            </td>
+                                            <td hidden>
+                                                <input style="width: 30px; background-color: #aed581; border: none"
                                                        type="text" name="addmore[{{ $item->options->item_id }}][cartId]"
                                                        id="cartId" value="{{ $uniqid }}" readonly/>
                                             </td>

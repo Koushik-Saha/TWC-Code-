@@ -14,12 +14,13 @@
                                 <thead>
                                 <tr>
                                     <th scope="col">#</th>
-                                    <th scope="col">Submit By</th>
-                                    <th scope="col">From</th>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Price</th>
+                                    <th scope="col">Vat</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Project</th>
+                                    <th scope="col">Request Code</th>
                                     <th scope="col">Bundle</th>
-                                    <th scope="col">Date</th>
-                                    <th scope="col">Action</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -27,10 +28,16 @@
                                     <tr>
                                         <th scope="row">{{$index+1}}</th>
                                         <td>
-                                            <a href="{{ route('administrators.show', ['id' => $item->request_id]) }}"
-                                               title="See User Information">
-                                                {{ $item->requestUser->name }}
-                                            </a>
+                                            {{ $item->item_id }}
+                                        </td>
+                                        <td>
+                                            {{ $item->price }}
+                                        </td>
+                                        <td>
+                                            {{ $item->vat }}
+                                        </td>
+                                        <td>
+                                            {{ $item->amount }}
                                         </td>
                                         <td>
                                             <a href="{{ route('project.show', ['id' => $item->project_id]) }}"
@@ -39,20 +46,10 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('request-item-list', ['id' => $item->cartId])}}"
-                                               title="See Requested Item">
-                                                {{ $item->cartId }} - {{ $index++ }}
-                                            </a>
+                                            {{ $item->request_code }}
                                         </td>
                                         <td>
-                                            {{ $item->created_at->format('d M Y, h:i A') }}
-                                        </td>
-                                        <td>
-                                            @if( \App\Models\PurchaseItem::where('status','=','0')->get() )
-                                                <i class="fas fa-check-circle bg-c-blue"></i>
-                                            @elseif( \App\Models\PurchaseItem::where('status','=','1')->get())
-                                                <i class="fas fa-times-circle bg-c-red"></i>
-                                            @endif
+                                            {{ $item->cartId }}
                                         </td>
                                     </tr>
                                 @endforeach

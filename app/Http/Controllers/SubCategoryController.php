@@ -57,7 +57,7 @@ class SubCategoryController extends Controller
             return redirectBackWithValidationError($validator);
         }
 
-        SubCategory::insert([
+        SubCategory::create([
             'mother_category_id' =>$request->motherCategory,
             'category_id' =>$request->category,
             'sub_category_name'=>$request->subCategoryName

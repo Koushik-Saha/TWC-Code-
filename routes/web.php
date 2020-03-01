@@ -290,6 +290,7 @@ Route::middleware('auth')->group(function() {
         Route::get('request-list', 'RequestItemController@showRequestList')->name('request-list');
         Route::get('request-item-list/{cartId}', 'RequestItemController@showRequestItemList')->name('request-item-list');
         Route::get('item-list-del/delete/{id}', 'RequestItemController@delete');
+        Route::get('request-list-manager', 'RequestItemController@showRequestListManager')->name('request-list-manager');
 
         //Cart Delete
         Route::post('inventory/cart/qty/delete','RequestItemController@delete');
@@ -305,6 +306,10 @@ Route::middleware('auth')->group(function() {
         Route::get('purchase-package-list', 'PurchaseItemController@purchasePackageList')->name('purchase-package-list');
         Route::get('purchase-item/{cartId}', 'PurchaseItemController@purchaseItem')->name('purchase-item');
         Route::post('purchase-status/{cartId}', 'PurchaseItemController@statusUpdate')->name('change-status');
+        Route::get('purchase-item-vendor/edit/{id}', 'PurchaseItemController@edit')->name('edit-inventory-vendor');
+        Route::post('purchase-item-vendor/edit/{id}', 'PurchaseItemController@updatePurchaseInventory')->name('edit-inventory-vendor');
+        Route::get('purchase-item-details/{cartId}', 'PurchaseItemController@purchaseItemDetails')->name('purchase-item-details');
+
 
         //Purchase History
         Route::get('purchase-history', 'PurchaseItemController@purchaseHistory')->name('purchase-history');
