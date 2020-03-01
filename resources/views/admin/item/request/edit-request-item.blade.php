@@ -31,8 +31,8 @@
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Item Price: <span
                                     class="red">*</span></label>
-                            <input type="number" step="0.01" class="form-control" id="recipient-name" name="price"
-                                   value="{{ old('price', $inventory->price) }}" required="">
+                            <input type="number" step="0.01" class="form-control" id="price" name="price"
+                                   value="{{ old('price', $inventory->price) }}" required="" onblur="totalAmount()">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Vat: </label>
@@ -41,13 +41,13 @@
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Quantity:  <span class="red">*</span></label>
-                            <input required type="number" step="0.01" class="form-control" id="recipient-name" name="quantity"
-                                   value="{{ old('quantity', $inventory->quantity) }}">
+                            <input required type="number" step="0.01" class="form-control" id="quantity" name="quantity"
+                                   value="{{ old('quantity', $inventory->quantity) }}" onblur="totalAmount()">
                         </div>
                         <div class="form-group">
                             <label for="recipient-name" class="col-form-label">Amount: </label>
-                            <input required type="number" step="0.01" class="form-control" id="recipient" name="amount"
-                                   value="{{ old('amount', $inventory->amount) }}">
+                            <input required type="number" step="0.01" class="form-control" id="amount" name="amount"
+                                   value="{{ old('amount', $inventory->amount) }}" readonly onblur="totalAmount()">
                         </div>
                         <div class="form-group" hidden>
                             <input type="text" class="form-control" id="recipient-name" name="mother_category_id"
@@ -91,6 +91,23 @@
                             <button type="submit" class="btn btn-mat btn-primary">Update</button>
                         </div>
                     </form>
+
+                    <script>
+                        function totalAmount() {
+
+                            var getPrice = document.getElementById('price').value;
+                            var getQuantity = document.getElementById('quantity').value;
+
+                            var getTotalAmount = Number(getPrice * getQuantity);
+                            var roundedString = getTotalAmount.toFixed(2);
+                            var getFinalAmount = Number(roundedString);
+
+                            // var num = Number(0.005);
+
+                            document.getElementById('amount').value = getFinalAmount;
+                        }
+                    </script>
+
                 </div>
             </div>
         </div>

@@ -297,8 +297,10 @@
                             $itemList = RequestItem::select(
                             \DB::raw('
                                      cartId,
+                                     status_req,
                                     MAX(created_at) AS created_at
                                     '))
+                                    ->where('status_req','0')
                                     ->groupBy('cartId')
                                     ->get();
                         @endphp

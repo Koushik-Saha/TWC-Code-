@@ -322,6 +322,7 @@ Route::middleware('auth')->group(function() {
         Route::get('request-by-projects', 'PurchaseItemController@showItemByProject')->name('inventory.requestByProjects');
 
 
+        Route::get('approve-status', 'RequestItemController@chnageApproveStatus')->name('change-approve-status');
 
 
 

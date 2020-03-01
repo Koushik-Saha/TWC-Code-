@@ -2,11 +2,17 @@
 
 @section('title', 'Item List')
 
+@section('style')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/switchery/0.8.2/switchery.min.js"></script>
+
+@endsection
+
 @section('content')
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <form action="{{route('approve-item')}}" method="post" enctype="multipart/form-data">
+                <form action="{{route('approve-item')}}" method="post" enctype="multipart/form-data" id="frm" >
                     @csrf
                     <div class="card comp-card">
                         <div class="card-body">
@@ -21,6 +27,7 @@
                                         <th scope="col">Quantity</th>
                                         <th scope="col">Amount</th>
                                         <th scope="col">Action</th>
+                                        <th scope="col">Status</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -82,6 +89,9 @@
                                                 <a href="{{ route('delete-request-inventory', ['id' => $item->id]) }}"
                                                    class="btn btn-sm btn-danger">Delete</a>
                                             </th>
+                                            <td>
+                                                <input type="checkbox" data-id="{{ $item->id }}" name="status_req" class="js-switch" {{ $item->status_req == 1 ? 'checked' : '' }}>
+                                            </td>
                                         </tr>
                                     @endforeach
                                     <tr>
@@ -95,9 +105,12 @@
                                     </tbody>
                                 </table>
                                 <div class="form-row mb-3">
-                                    <div class="col text-center">
-                                        <input type="submit" value="Approved Item" id=""
-                                               class="btn btn-outline-success text-uppercase">
+                                    <div class="col text-center" id="counter">
+                                        @if( $item->status_req === 0 )
+                                            <input type="submit" value="Approved Item" class="btn btn-outline-success text-uppercase">
+                                        @else
+                                            <h3 class="label-danger">You have approved this package</h3>
+                                        @endif
                                     </div>
                                 </div>
                             </div>
@@ -138,5 +151,37 @@
         });
 
     </script>
+
+    <script>
+        let elems = Array.prototype.slice.call(document.querySelectorAll('.js-switch'));
+
+        elems.forEach(function(html) {
+            let switchery = new Switchery(html,  { size: 'small' });
+        });
+
+        $(document).ready(function(){
+
+            $('#itemList').on('change', '.js-switch', function(){
+                // ... skipped ...
+                let status_req = $(this).prop('checked') === true ? 1 : 0;
+                let userId = $(this).data('id');
+                $.ajax({
+                    type: "GET",
+                    dataType: "json",
+                    url: '{{ route('change-approve-status') }}',
+                    data: {'status_req': status_req, 'user_id': userId},
+                    success: function (data) {
+                        toastr.options.closeButton = true;
+                        toastr.options.closeMethod = 'fadeOut';
+                        toastr.options.closeDuration = 100;
+                        toastr.success(data.message);
+                    }
+                });
+            });
+        });
+
+    </script>
+
+
 
 @endsection

@@ -108,11 +108,36 @@ class PurchaseItemController extends Controller
     }
 
 
-    public function edit($id) {
+    public function edit($id, Request $request) {
 
         $purchase = PurchaseItem::findOrFail($id);
 
-        $vendor = User::where('role_id','16')->get();
+        $projectItem = new Project();
+
+//        if(Auth::user()->isAdmin() || Auth::user()->isAccountant()) {
+//            $project  = $projectItem->where('project_status', '=', 'active')->get();
+//        }
+//        else {
+//            $project = Auth::user()->projects()
+//                ->where('project_status', '=', 'active')
+//                ->orderBy('created_at', 'DESC')
+//                ->get();
+//        }
+
+
+
+        $role_id = Role::whereRoleSlug('supplier')->firstOrFail()->role_id;
+
+        $vendor = $projectItem->employees()
+            ->where('role_id', '=', $role_id)
+            ->orderBy('name')->get();
+
+
+//        dd($vendor);
+
+
+//        $vendor = User::where('role_id','16')->get();
+
 
         return view('admin.item.purchase.edit-purchase-item')
             ->with([

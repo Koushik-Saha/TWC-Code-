@@ -19,7 +19,6 @@
                                     <th scope="col">Bundle</th>
                                     <th scope="col">Date</th>
                                     <th scope="col">Action</th>
-
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -48,9 +47,9 @@
                                             {{ $item->created_at->format('d M Y, h:i A') }}
                                         </td>
                                         <td>
-                                            @if( \App\Models\PurchaseItem::where('status','=','0')->get() )
+                                            @if( $item->status_req === 1 )
                                                 <i class="fas fa-check-circle bg-c-blue"></i>
-                                            @elseif( \App\Models\PurchaseItem::where('status','=','1')->get())
+                                            @else
                                                 <i class="fas fa-times-circle bg-c-red"></i>
                                             @endif
                                         </td>

@@ -118,6 +118,7 @@ class RequestItemController extends Controller
                            cartId,
                            request_id,
                            project_id,
+                           status_req,
                            MAX(created_at) AS created_at,
                            MAX(id) AS id
             '))
@@ -231,5 +232,15 @@ class RequestItemController extends Controller
         $inventory->delete();
 
         return redirect()->back()->with('message','Request Item Deleted Successfully');
+    }
+
+
+    public function chnageApproveStatus(Request $request)
+    {
+        $labor = RequestItem::find($request->user_id);
+        $labor->status_req = $request->status_req;
+        $labor->save();
+
+        return response()->json(['message' => 'Item status has been changed']);
     }
 }

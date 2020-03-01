@@ -89,12 +89,15 @@
                                 <div class="form-row mb-3">
                                     <div class="col text-center">
                                         @if( $item->status === 0)
-                                            <span class="label label-success">Please select vendor first</span>
                                             <br>
                                             <br>
-                                            <button type="submit" class="btn btn-outline-success text-uppercase"
-                                                    name="status" value="1">Purchase
-                                            </button>
+                                            @if($item->vendor_id != null)
+                                                <button type="submit" class="btn btn-outline-success text-uppercase"
+                                                        name="status" value="1">Purchase
+                                                </button>
+                                            @else
+                                                <h3 class="label-danger">Please select all item's vendor</h3>
+                                            @endif
                                         @else
                                             <span class="label label-danger">You have Purchase This Item Packages</span>
                                         @endif
@@ -137,6 +140,18 @@
                 });
         });
 
+    </script>
+
+    <script language="javascript">
+        function confirmDel() {
+            var agree = confirm("Please Select a Vendor");
+            if (!agree) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
     </script>
 
 @endsection
